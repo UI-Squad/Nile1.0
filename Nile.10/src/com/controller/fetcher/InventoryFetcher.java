@@ -2,6 +2,7 @@ package com.controller.fetcher;
 /**
  * Performs SQL queries and updates on the Inventory table in the database.
  * @author Shane Bogard
+ * @author Manuel Ben Bravo
  */
 
 import java.sql.ResultSet;
@@ -121,6 +122,82 @@ public class InventoryFetcher extends DataFetcher {
 		intMap.put(6, inStock);
 		updateData();
 	}
+	
+	
+	/**
+	 * Changes a specified item's inStock field in the Inventory table. 
+	 * @param itemId String literal specifying the itemId
+	 * @param quantity Integer value specifying the new quantity in stock
+	 */
+	public void updateItem(String itemId, String name, String description, 
+						String dept, double price, int inStock) {
+		clearMaps();
+		sql = "UPDATE Inventory i SET i.name = ?, i.description = ?, i.dept = ?, "
+				+ "i.price = ?, i.inStock = ? WHERE i.itemId = ?";
+		stringMap.put(1, name);
+		stringMap.put(2, description);
+		stringMap.put(3, dept);
+		doubleMap.put(4, price);
+		intMap.put(5, inStock);
+		stringMap.put(6, itemId);
+		updateData();
+	}
+	
+	/**
+	 * Changes the stock quantity of this item in the Inventory table.
+	 * @param itemId String literal specifying the item ID
+	 * @param inStock String literal specifying
+	 */
+	public void updateItemStock(String itemId, int inStock) {
+		clearMaps();
+		sql = "UPDATE Inventory i SET i.inStock = ? WHERE i.itemID = ?";
+		intMap.put(1, inStock);
+		stringMap.put(2, itemId);
+		updateData();
+	}
+	
+	/**
+	 * Adds stock to the specified item in the Inventory table.
+	 * @param itemId String literal specifying the item ID
+	 * @param addAmt Integer value specifying the amount to add to the item's stock
+	 */
+	public void addItemStock(String itemId, int addAmt) {
+		clearMaps();
+		sql = "UPDATE Inventory i SET i.instock = i.instock + ? WHERE i.itemId = ?";
+		intMap.put(1, addAmt);
+		stringMap.put(2, itemId);
+		updateData();
+	}
+	
+	/**
+	 * Subtracts stock from the specified item in the Inventory table.
+	 * @param itemId String literal specifying the item ID
+	 * @param subAmt Integer value specifying the amount to subtract from the item's stock
+	 */
+	public void subtractItemStock(String itemId, int subAmt) {
+		clearMaps();
+		sql = "UPDATE Inventory i SET i.instock = i.instock - ? WHERE i.itemId = ?";
+		intMap.put(1, subAmt);
+		stringMap.put(2, itemId);
+		updateData();
+	}
+	
+	public ResultSet search(String search) {
+		clearMaps();
+		sql = "SELECT i.* from Inventory i WHERE i.name LIKE ? ? ? OR i.description LIKE ? ? ? "
+				+ "OR i.dept LIKE ? ? ?";
+		stringMap.put(1, "%");
+		stringMap.put(2, search);
+		stringMap.put(3, "%");
+		stringMap.put(4, "%");
+		stringMap.put(5, search);
+		stringMap.put(6, "%");
+		stringMap.put(7, "%");
+		stringMap.put(8, search);
+		stringMap.put(9, "%");
+		return fetchData();
+	}
+	
 	
 	/**
 	 * Removes a row from the Inventory table specified by itemId
