@@ -5,9 +5,10 @@ package com.controller.fetcher;
  */
 
 import java.sql.ResultSet;
+import com.controller.sorting.Columns;
 
 public class InventoryFetcher extends DataFetcher {
-
+	
 	/**
 	 * Constructs a new InventoryFetcher object with an existing connector to the database.
 	 * @param connector Connector object specifying an already existing connector to the database
@@ -30,6 +31,36 @@ public class InventoryFetcher extends DataFetcher {
 	public ResultSet fetchAll() {
 		clearMaps();
 		sql = "SELECT i.* FROM Inventory i";
+		return fetchData();
+	}
+	
+	/**
+	 * 
+	 * @param col1
+	 * @param desc1
+	 * @param col2
+	 * @param desc2
+	 * @return
+	 */
+	public ResultSet fetchAllSortedBy(Columns col1, boolean desc1,
+										Columns col2, boolean desc2) {
+		clearMaps();
+		sql = "Select i.* FROM Inventory i ORDER BY " + col1.toString()
+				+ ((desc1) ? " DESC" : " ASC") + ", " 
+				+ col2.toString() + ((desc2) ? " DESC" : " ASC");
+		return fetchData();
+	}
+	
+	/**
+	 * Returns all rows from the Inventory table ordered by specified Column
+	 * @param column 
+	 * @param descending
+	 * @return ResultSet results of a SQL query
+	 */
+	public ResultSet fetchAllSortedBy(Columns column, boolean descending) {
+		clearMaps();
+		sql = "Select i.* FROM Inventory i ORDER BY " + column.toString()
+				+ ((descending) ? " DESC" : " ASC");
 		return fetchData();
 	}
 	
@@ -95,7 +126,7 @@ public class InventoryFetcher extends DataFetcher {
 	 * Removes a row from the Inventory table specified by itemId
 	 * @param itemId String literal specifying the Id of the item to remove
 	 */
-	public void removeItem(String itemId) {
+	public void removeItemById(String itemId) {
 		clearMaps();
 		sql = "DELETE from Inventory WHERE itemId = ?";
 		stringMap.put(1, itemId);

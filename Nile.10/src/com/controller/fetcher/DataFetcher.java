@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 public abstract class DataFetcher {
 	
+	
 	/** SQL PreparedStatement **/
 	protected PreparedStatement preparedStatement;
 	/** SQL ResultSet**/
