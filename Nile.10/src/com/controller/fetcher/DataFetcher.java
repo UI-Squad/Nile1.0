@@ -5,29 +5,31 @@ package com.controller.fetcher;
  * including selections, insertions, updates and deletions.
  */
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.HashMap;
 
 public abstract class DataFetcher {
-	
-	
-	/** SQL PreparedStatement **/
-	protected PreparedStatement preparedStatement;
-	/** SQL ResultSet**/
-	protected ResultSet resultSet;
 	/** Establishes connection to database. Allows for
 	 * opening, closing and modifying of the connection
 	 * to the database */
 	public Connector connector;
+	/** SQL PreparedStatement **/
+	protected PreparedStatement preparedStatement;
+	/** SQL ResultSet**/
+	protected ResultSet resultSet;
 	/** For mapping SQL prepared statements to Strings */
 	protected HashMap<Integer, String> stringMap;
 	/** For mapping SQL prepared statements to Integers */
 	protected HashMap<Integer, Integer> intMap;
 	/** For mapping SQL prepared statements to Doubles */
 	protected HashMap<Integer, Double> doubleMap;
-	/** SQL statement to be executed */
+	/** For mapping SQL prepared statements to date object */
+	protected HashMap<Integer, Date> dateMap;
+	/** SQL statement used for queries and updates */
 	protected String sql;
 	
 	/**
@@ -42,6 +44,7 @@ public abstract class DataFetcher {
 		stringMap = new HashMap<Integer, String>();
 		intMap = new HashMap<Integer, Integer>();
 		doubleMap = new HashMap<Integer, Double>();
+		dateMap = new HashMap<Integer, Date>();
 		if(connector.isClosed()) connector.openConnection();
 	}
 	
@@ -122,6 +125,16 @@ public abstract class DataFetcher {
 			}
 			index++;
 		}
+		//date values
+		index = 1;
+		values = dateMap.size();
+		while(values > 0) {
+			if(dateMap.get(index) != null) {
+				preparedStatement.setDate(index, dateMap.get(index));
+				values--;
+			}
+			index++;
+		}
 	}
 	
 	/**
@@ -131,6 +144,7 @@ public abstract class DataFetcher {
 		stringMap.clear();
 		intMap.clear();
 		doubleMap.clear();
+		dateMap.clear();
 	}
 		
 	/**
