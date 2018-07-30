@@ -6,7 +6,6 @@ package com.controller.fetcher;
  */
 
 import java.sql.ResultSet;
-import com.controller.sorting.Columns;
 
 public class InventoryFetcher extends DataFetcher {
 	
@@ -43,12 +42,12 @@ public class InventoryFetcher extends DataFetcher {
 	 * @param desc2
 	 * @return
 	 */
-	public ResultSet fetchAllSortedBy(Columns col1, boolean desc1,
-										Columns col2, boolean desc2) {
+	public ResultSet fetchAllSortedBy(String col1, boolean desc1,
+										String col2, boolean desc2) {
 		clearMaps();
-		sql = "Select i.* FROM Inventory i ORDER BY " + col1.toString()
+		sql = "Select i.* FROM Inventory i ORDER BY " + col1
 				+ ((desc1) ? " DESC" : " ASC") + ", " 
-				+ col2.toString() + ((desc2) ? " DESC" : " ASC");
+				+ col2 + ((desc2) ? " DESC" : " ASC");
 		return fetchData();
 	}
 	
@@ -58,9 +57,9 @@ public class InventoryFetcher extends DataFetcher {
 	 * @param descending
 	 * @return ResultSet results of a SQL query
 	 */
-	public ResultSet fetchAllSortedBy(Columns column, boolean descending) {
+	public ResultSet fetchAllSortedBy(String column, boolean descending) {
 		clearMaps();
-		sql = "Select i.* FROM Inventory i ORDER BY " + column.toString()
+		sql = "Select i.* FROM Inventory i ORDER BY " + column
 				+ ((descending) ? " DESC" : " ASC");
 		return fetchData();
 	}
@@ -125,7 +124,7 @@ public class InventoryFetcher extends DataFetcher {
 	
 	
 	/**
-	 * Changes a specified item's inStock field in the Inventory table. 
+	 * Changes an item row in the Inventory table.
 	 * @param itemId String literal specifying the itemId
 	 * @param quantity Integer value specifying the new quantity in stock
 	 */

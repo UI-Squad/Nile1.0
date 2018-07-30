@@ -79,11 +79,11 @@ public class Cart{
 	}
 	
 	/**
-	 * Adds an item to this cart.
+	 * Adds an item to this cart if the item does not already exist.
 	 * @param item An item object to add to this cart
 	 */
 	public void addToCart(Item item){
-		this.cart.add(item);
+		if(!(cart.contains(item))) cart.add(item);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class Cart{
 	 */
 	public ArrayList<Item> clearCart(){
 		ArrayList<Item> temp = new ArrayList<Item>(cart);
-		this.cart.clear();
+		cart.clear();
 		return temp;
 	}
 
@@ -100,7 +100,7 @@ public class Cart{
 	 * @param item A specified item object to be removed from the cart
 	 */
 	public void removeItem(Item item){
-		this.cart.remove(item);
+		cart.remove(item);
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class Cart{
 	public String getCartTotal(){
 		setCartTotal();
 		NumberFormat formating = NumberFormat.getCurrencyInstance();
-		String Amt = formating.format(this.cartTotal);
+		String Amt = formating.format(cartTotal);
 		return Amt;
 	}
 	
@@ -152,7 +152,7 @@ public class Cart{
 	public boolean equals(Object o) {
 		if(!(o instanceof Cart)) return false;
 		Cart other = (Cart)o;
-		return cart.equals(other.getCartItems());
+		return (cart.equals(other.getCartItems()) || cartId.equals(other.getCartId()));
 	}
 	
 	/**

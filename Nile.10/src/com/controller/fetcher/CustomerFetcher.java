@@ -69,6 +69,18 @@ public class CustomerFetcher extends DataFetcher {
 	}
 	
 	/**
+	 * 
+	 * @param customerId
+	 * @return
+	 */
+	public ResultSet fetchRegisteredCartId(String customerId) {
+		clearMaps();
+		sql = "SELECT c.curCart from Customers c WHERE c.customerId = ?";
+		stringMap.put(1, customerId);
+		return fetchData();
+	}
+	
+	/**
 	 * Adds a new customer row to the Customers table.
 	 * @param email
 	 * @param password

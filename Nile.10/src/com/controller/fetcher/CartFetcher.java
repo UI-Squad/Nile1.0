@@ -51,6 +51,19 @@ public class CartFetcher extends DataFetcher{
 		return fetchData();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public ResultSet fetchItemByCartId(String cartId, String itemId) {
+		clearMaps();
+		sql = "SELECT c.*, i.price FROM Carts c, Inventory i WHERE c.cartId = ? "
+				+ "AND c.itemId = ? AND c.itemId = i.itemId";
+		stringMap.put(1, cartId);
+		stringMap.put(2, itemId);
+		return fetchData();
+	}
+	
 	/** 
 	 * Adds a new row to the Carts table/
 	 * @param cartId String literal specifying the cartId
@@ -100,12 +113,14 @@ public class CartFetcher extends DataFetcher{
 	 * Removes all items from a Cart in the Carts table specified by CartId/
 	 * @param cartId String literal specifying the cart id
 	 */
-	public void clearCartbyCartId(String cartId) {
+	public void clearCartByCartId(String cartId) {
 		clearMaps();
 		sql = "DELETE from Carts WHERE cartId = ?";
 		stringMap.put(1,  cartId);
 		updateData();
 	}
+	
+	
 	
 	/**
 	 * Removes all items from a Cart in the Carts table specified by Customer Id.
@@ -116,6 +131,11 @@ public class CartFetcher extends DataFetcher{
 		sql = "DELETE from Carts WHERE customerId = ?";
 		stringMap.put(1,  customerId);
 		updateData();
+	}
+	
+	public void returnItem(String cartId, String itemId) {
+		clearMaps();
+		
 	}
 }
 
