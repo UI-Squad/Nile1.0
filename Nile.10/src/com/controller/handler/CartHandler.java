@@ -5,6 +5,7 @@ package com.controller.handler;
 
 import java.sql.SQLException;
 import com.controller.fetcher.CartFetcher;
+import com.controller.fetcher.Connector;
 import com.controller.fetcher.CustomerFetcher;
 import com.controller.fetcher.InventoryFetcher;
 import application.model.Cart;
@@ -17,14 +18,23 @@ public class CartHandler extends DataHandler<CartFetcher>{
 	
 	/** **/
 	private String cartId;
+	
+	public CartHandler(CartFetcher fetcher) {
+		super(fetcher);
+		cart = new Cart();
+		cartId = "";
+	}
+	
+	public CartHandler(Connector connector) {
+		this();
+		fetcher.connector = connector;
+	}
 
 	/**
 	 * 
 	 */
 	public CartHandler() {
-		super(new CartFetcher());
-		cart = new Cart();
-		cartId = "";
+		this(new CartFetcher());
 	}
 	
 	/**
@@ -105,8 +115,17 @@ public class CartHandler extends DataHandler<CartFetcher>{
 		}
 	}
 	
-	
-	
+	/**
+	 * Returns all the items in the cart back into Inventory
+	 * @param cartId
+	 */
+	public void returnCart(String cartId) {
+		cart = getCartById(cartId);
+		for(Item item : cart.getCartItems()) {
+			returnItem(cartId, item.getItemId());
+		}
+	}
+		
 	/**
 	 * Returns the cart of a registered Customer
 	 * @param customerId String literal specifying the Customer Id of the registered customer
@@ -157,7 +176,7 @@ public class CartHandler extends DataHandler<CartFetcher>{
 							results.getInt("quantity")));
 			}
 		} catch(SQLException e) {
-			System.err.println(e.getMessage());
+			System.err.println(this.getClass().getName() + ":" + e.getMessage());
 		}
 		
 	}

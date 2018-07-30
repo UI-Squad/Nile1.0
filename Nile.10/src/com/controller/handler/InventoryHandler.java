@@ -5,16 +5,26 @@ package com.controller.handler;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import com.controller.fetcher.Connector;
 import com.controller.fetcher.InventoryFetcher;
 import application.model.Item;
 
 public class InventoryHandler extends DataHandler<InventoryFetcher>{
 	
 	private ArrayList<Item> items;
-				
-	public InventoryHandler() {
-		super(new InventoryFetcher());
+			
+	public InventoryHandler(InventoryFetcher fetcher) {
+		super(fetcher);
 		this.items = new ArrayList<Item>();
+	}
+	
+	public InventoryHandler(Connector connector) {
+		this();
+		fetcher.connector = connector;
+	}
+	
+	public InventoryHandler() {
+		this(new InventoryFetcher());
 	}
 	
 	/**
@@ -210,7 +220,7 @@ public class InventoryHandler extends DataHandler<InventoryFetcher>{
 							results.getInt("inStock")));
 			}
 		} catch(SQLException e) {
-			System.err.println(e.getMessage());
+			System.err.println(this.getClass().getName() + ":" + e.getMessage());
 		}
 	}
 }

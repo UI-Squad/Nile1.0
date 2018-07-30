@@ -35,14 +35,17 @@ public class Connector {
 	
 	/**
 	 * Opens a connection to the UI_Database.
+	 * @throws SQLException 
 	 */
-	public void openConnection() {
+	public void openConnection(){
+		System.out.println("OPENING CONNECTION...");
 		try {
 			// This will load the MySQL driver, each DBMS has its own driver
 			Class.forName("com.mysql.jdbc.Driver");
-			this.connect = DriverManager.getConnection("jdbc:mysql://45.17.26.63/ui_database?serverTimezone=UTC", USER, PASS);
+			connect = DriverManager.getConnection("jdbc:mysql://45.17.26.63/ui_database?serverTimezone=UTC", USER, PASS);
+			System.out.println("CONNECTION SUCCESSFUL...");
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println(this.getClass().getName() + ":" + e.getMessage());
 		}
 	}
 		
@@ -50,12 +53,15 @@ public class Connector {
 	 * Closes the connection to the Database.
 	 */
 	public void closeConnection() {
+		System.out.println("CLOSING CONNECTION...");
 		try {
-			if(connect != null)
+			if(connect != null) {
 				connect.close();
+				System.out.println("CONNECTION CLOSED");
+			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			System.err.println(this.getClass().getName() + ":" + e.getMessage());
 		}
 	}
 	
@@ -80,7 +86,7 @@ public class Connector {
 			return connect.isClosed();
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println(this.getClass().getName() + ":" + e.getMessage());
 		}
 		return false;
 		

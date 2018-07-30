@@ -11,7 +11,6 @@ import javax.xml.bind.DatatypeConverter;
 
 public class CustomerFetcher extends DataFetcher {
 
-	
 	public CustomerFetcher(Connector connector) {
 		super(connector);
 	}

@@ -9,7 +9,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.HashMap;
 
 public abstract class DataFetcher {
@@ -66,7 +65,7 @@ public abstract class DataFetcher {
 			//execute query
 			resultSet = preparedStatement.executeQuery();
 		} catch(SQLException e) {
-			System.err.println(e.getMessage());
+			System.err.println(this.getClass().getName() + ":" + e.getMessage());
 		}
 		sql = null;
 		return resultSet;
@@ -82,7 +81,7 @@ public abstract class DataFetcher {
 			//execute query
 			preparedStatement.executeUpdate();
 		} catch(SQLException e) {
-			System.err.println(e.getMessage());
+			System.err.println(this.getClass().getName() + ":" + e.getMessage());
 		}
 		sql = null;
 	}
@@ -91,49 +90,56 @@ public abstract class DataFetcher {
 	 * Prepares the SQL statement for execution.
 	 * @throws SQLException
 	 */
-	private void prepareStatement() throws SQLException {
+	private void prepareStatement(){
 		int values = stringMap.size();
 		int index = 1;
-		if(connector.isClosed()) connector.openConnection();
+		if(connector.isClosed()) {
+			System.out.println("RE-ESTABLISHING CONNECTION...");
+			connector.openConnection();
+		}
 		//SQL statement
-		preparedStatement = connector.connect.prepareStatement(sql);
-		//string values;
-		while(values > 0) {
-			if(stringMap.get(index) != null) {
-				preparedStatement.setString(index, stringMap.get(index));
-				values--;
+		try {
+			preparedStatement = connector.connect.prepareStatement(sql);
+			//string values;
+			while(values > 0) {
+				if(stringMap.get(index) != null) {
+					preparedStatement.setString(index, stringMap.get(index));
+					values--;
+				}
+				index++;
 			}
-			index++;
-		}
-		//integer values
-		index = 1;
-		values = intMap.size();
-		while(values > 0) {
-			if(intMap.get(index) != null) {
-				preparedStatement.setInt(index, intMap.get(index));
-				values--;
+			//integer values
+			index = 1;
+			values = intMap.size();
+			while(values > 0) {
+				if(intMap.get(index) != null) {
+					preparedStatement.setInt(index, intMap.get(index));
+					values--;
+				}
+				index++;
 			}
-			index++;
-		}
-		//double values
-		index = 1;
-		values = doubleMap.size();
-		while(values > 0) {
-			if(doubleMap.get(index) != null) {
-				preparedStatement.setDouble(index, doubleMap.get(index));
-				values--;
+			//double values
+			index = 1;
+			values = doubleMap.size();
+			while(values > 0) {
+				if(doubleMap.get(index) != null) {
+					preparedStatement.setDouble(index, doubleMap.get(index));
+					values--;
+				}
+				index++;
 			}
-			index++;
-		}
-		//date values
-		index = 1;
-		values = dateMap.size();
-		while(values > 0) {
-			if(dateMap.get(index) != null) {
-				preparedStatement.setDate(index, dateMap.get(index));
-				values--;
+			//date values
+			index = 1;
+			values = dateMap.size();
+			while(values > 0) {
+				if(dateMap.get(index) != null) {
+					preparedStatement.setDate(index, dateMap.get(index));
+					values--;
+				}
+				index++;
 			}
-			index++;
+		}catch (SQLException e) {
+			System.err.println(this.getClass().getName() + ":" + e.getMessage());
 		}
 	}
 	
@@ -160,7 +166,7 @@ public abstract class DataFetcher {
 				connector.closeConnection();;
 		}
 		catch (Exception e) {
-			System.err.println(e.getMessage());
+			System.err.println(this.getClass().getName() + ":" + e.getMessage());
 		}
 	}
 }

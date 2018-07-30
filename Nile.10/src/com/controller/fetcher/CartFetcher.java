@@ -32,7 +32,8 @@ public class CartFetcher extends DataFetcher{
 	 */
 	public ResultSet fetchByCartId(String cartId) {
 		clearMaps();
-		sql = "SELECT c.*, i.price FROM Carts c, Inventory i WHERE c.cartId = ? AND c.itemId = i.itemId";
+		sql = "SELECT c.itemId, i.name, i.description, i.dept, i.price, c.quantity " 
+				+ "FROM Carts c, Inventory i WHERE c.cartId = ? AND c.itemId = i.itemId";
 		stringMap.put(1, cartId);
 		return fetchData();
 	}
@@ -46,7 +47,8 @@ public class CartFetcher extends DataFetcher{
 	 */
 	public ResultSet fetchByCustomerId(String custId) {
 		clearMaps();
-		sql = "SELECT c.*, i.price FROM Carts c, Inventory i WHERE c.customerId = ? AND c.itemId = i.itemId";
+		sql = "SELECT c.itemId, i.name, i.description, i.dept, i.price, c.quantity " 
+				+ "FROM Carts c, Inventory i WHERE c.customerId = ? AND c.itemId = i.itemId";
 		stringMap.put(1, custId);
 		return fetchData();
 	}
@@ -57,13 +59,13 @@ public class CartFetcher extends DataFetcher{
 	 */
 	public ResultSet fetchItemByCartId(String cartId, String itemId) {
 		clearMaps();
-		sql = "SELECT c.*, i.price FROM Carts c, Inventory i WHERE c.cartId = ? "
-				+ "AND c.itemId = ? AND c.itemId = i.itemId";
+		sql = "SELECT c.itemId, i.name, i.description, i.dept, i.price, c.quantity " 
+				+ "FROM Carts c, Inventory i WHERE c.customerId = ? AND c.itemId = ?";
 		stringMap.put(1, cartId);
 		stringMap.put(2, itemId);
 		return fetchData();
 	}
-	
+		
 	/** 
 	 * Adds a new row to the Carts table/
 	 * @param cartId String literal specifying the cartId
@@ -131,11 +133,6 @@ public class CartFetcher extends DataFetcher{
 		sql = "DELETE from Carts WHERE customerId = ?";
 		stringMap.put(1,  customerId);
 		updateData();
-	}
-	
-	public void returnItem(String cartId, String itemId) {
-		clearMaps();
-		
 	}
 }
 
