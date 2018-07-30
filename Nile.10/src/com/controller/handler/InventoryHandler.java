@@ -19,8 +19,7 @@ public class InventoryHandler extends DataHandler<InventoryFetcher>{
 	}
 	
 	public InventoryHandler(Connector connector) {
-		this();
-		fetcher.connector = connector;
+		this(new InventoryFetcher(connector));
 	}
 	
 	public InventoryHandler() {
@@ -145,7 +144,7 @@ public class InventoryHandler extends DataHandler<InventoryFetcher>{
 	 * Returns all items in Inventory.
 	 * @return ArrayList of item objects
 	 */
-	public ArrayList<Item> getAllInventory(){
+	public ArrayList<Item> getAll(){
 		results = fetcher.fetchAll();
 		parseResults();
 		return items;

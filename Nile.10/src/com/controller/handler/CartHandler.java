@@ -26,8 +26,7 @@ public class CartHandler extends DataHandler<CartFetcher>{
 	}
 	
 	public CartHandler(Connector connector) {
-		this();
-		fetcher.connector = connector;
+		this(new CartFetcher(connector));
 	}
 
 	/**
@@ -42,7 +41,7 @@ public class CartHandler extends DataHandler<CartFetcher>{
 	 * @param cartId
 	 * @return
 	 */
-	public Cart getCartById(String cartId) {
+	public Cart getById(String cartId) {
 		this.cartId = cartId;
 		results = fetcher.fetchByCartId(cartId);
 		parseResults();
@@ -56,7 +55,7 @@ public class CartHandler extends DataHandler<CartFetcher>{
 	 * @param itemId
 	 * @param quantity
 	 */
-	public void addCartItem(String cartId, String customerId, String itemId, int quantity) {
+	public void addItem(String cartId, String customerId, String itemId, int quantity) {
 		fetcher.addCartItem(cartId, customerId, itemId, quantity);
 	}
 	
@@ -66,8 +65,8 @@ public class CartHandler extends DataHandler<CartFetcher>{
 	 * @param customerId
 	 * @param item
 	 */
-	public void addCartItem(String cartId, String customerId, Item item) {
-		addCartItem(cartId, customerId, item.getItemId(), item.getQuantity());
+	public void addItem(String cartId, String customerId, Item item) {
+		addItem(cartId, customerId, item.getItemId(), item.getQuantity());
 	}
 	
 	/**
@@ -120,7 +119,7 @@ public class CartHandler extends DataHandler<CartFetcher>{
 	 * @param cartId
 	 */
 	public void returnCart(String cartId) {
-		cart = getCartById(cartId);
+		cart = getById(cartId);
 		for(Item item : cart.getCartItems()) {
 			returnItem(cartId, item.getItemId());
 		}
@@ -131,7 +130,7 @@ public class CartHandler extends DataHandler<CartFetcher>{
 	 * @param customerId String literal specifying the Customer Id of the registered customer
 	 * @return Cart object
 	 */
-	public Cart getRegisteredCart(String customerId) {
+	public Cart getRegistered(String customerId) {
 		//find registered customer's current cart.
 		results = new CustomerFetcher(getFetcher().connector).fetchRegisteredCartId(customerId);
 		try {

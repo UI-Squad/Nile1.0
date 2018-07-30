@@ -30,8 +30,7 @@ public class CustomerHandler extends DataHandler<CustomerFetcher> {
 	 * @param connector
 	 */
 	public CustomerHandler(Connector connector) {
-		this();
-		fetcher.connector = connector;
+		this(new CustomerFetcher(connector));
 	}
 	
 	/**
@@ -47,7 +46,7 @@ public class CustomerHandler extends DataHandler<CustomerFetcher> {
 	 * @param email
 	 * @return Customer object
 	 */
-	public Customer getCustomerById(String customerId, String password) {
+	public Customer getById(String customerId, String password) {
 		System.out.println("VERIFYING CUSTOMER");
 		results = fetcher.fetchCustomerById(customerId, password);
 		parseResults();
@@ -60,13 +59,129 @@ public class CustomerHandler extends DataHandler<CustomerFetcher> {
 	 * @param password
 	 * @return Customer object
 	 */
-	public Customer getCustomerByEmail(String email, String password) {
+	public Customer getByEmail(String email, String password) {
 		System.out.println("VERIFYING CUSTOMER");
 		results = fetcher.fetchCustomerByEmail(email, password);
 		parseResults();
 		return customer;
 	}
 	
+	/**
+	 * Adds a new Customer to Customers
+	 * @param email
+	 * @param password
+	 * @param customerId
+	 * @param firstNm
+	 * @param middleNm
+	 * @param lastNm
+	 * @param address
+	 * @param phoneNum
+	 * @param curCart
+	 */
+	public void add(String email, String password, String customerId, String firstNm,
+						String middleNm, String lastNm, String address, String phoneNum, String curCart) {
+		fetcher.addCustomer(email, password, customerId, firstNm, middleNm, lastNm, address, phoneNum, curCart);
+	}
+	
+	/**
+	 * Adds a new customer row to the Customers table.
+	 * @param email
+	 * @param password
+	 * @param firstNm
+	 * @param lastNm
+	 */
+	public void add(String email, String password, String firstNm, String lastNm) {
+		fetcher.addCustomer(email, password, firstNm, lastNm);
+	}
+	
+	/**
+	 * Adds a new customer row to the Customers table.
+	 * @param customer
+	 * @param password
+	 */
+	public void add(Customer customer, String password) {
+		add(customer.getEmail(), password, customer.getId(), customer.getName().getFirst(),
+				customer.getName().getMiddle(), customer.getName().getLast(), customer.getAddress().toString(),
+				customer.getPhoneNum(), customer.getCart().getCartId());
+	}
+	
+	/**
+	 * Updates a customer row in the Customers specified by the Customer ID
+	 * @param customerId
+	 * @param email
+	 * @param firstNm
+	 * @param middleNm
+	 * @param lastNm
+	 * @param address
+	 * @param phoneNum
+	 * @param curCart
+	 */
+	public void updateById(String customerId, String email, String firstNm, String middleNm,
+					String lastNm, String address, String phoneNum, String curCart) {
+		fetcher.updateCustomerById(customerId, email, firstNm, middleNm, lastNm, address, phoneNum, curCart);
+	}
+	
+	/**
+	 * Updates a customer row in the Customers specified by the Customer ID
+	 * @param customerId
+	 * @param email
+	 * @param firstNm
+	 * @param middleNm
+	 * @param lastNm
+	 * @param address
+	 * @param phoneNum
+	 */
+	public void updateById(String customerId, String email, String firstNm, String middleNm,
+			String lastNm, String address, String phoneNum) {
+		fetcher.updateCustomerById(customerId, email, firstNm, middleNm, lastNm, address, phoneNum);
+	}
+	
+	/**
+	 * Updates a customer row in the Customers table specified by the Customer's email
+	 * @param email
+	 * @param firstNm
+	 * @param middleNm
+	 * @param lastNm
+	 * @param address
+	 * @param phoneNum
+	 * @param curCart
+	 */
+	public void updateByEmail(String email, String firstNm, String middleNm, String lastNm, 
+			String address, String phoneNum, String curCart) {
+		fetcher.updateCustomerByEmail(email, firstNm, middleNm, lastNm, address, phoneNum);
+	}
+	
+
+	/**
+	 * Updates a customer row in the Customers table specified by the Customer's email
+	 * @param email
+	 * @param firstNm
+	 * @param middleNm
+	 * @param lastNm
+	 * @param address
+	 * @param phoneNum
+	 * @param curCart
+	 */
+	public void updateByEmail(String email, String firstNm, String middleNm, String lastNm, 
+			String address, String phoneNum) {
+		fetcher.updateCustomerByEmail(email, firstNm, middleNm, lastNm, address, phoneNum);
+	}
+	
+	/**
+	 * Removes a customer row from the Customers table specified by customerId
+	 * @param customerId String literal specifying the ID of the customer
+	 */
+	public void removebyId(String customerId) {
+		fetcher.removeCustomerbyId(customerId);
+	}
+	
+	/**
+	 * Removes a customer row from the Customers table specified by an email
+	 * @param emailString literal specifying the email of the customer
+	 */
+	public void removebyEmail(String email) {
+		fetcher.removeCustomerbyEmail(email);
+	}
 	
 	
 	/**
@@ -83,7 +198,7 @@ public class CustomerHandler extends DataHandler<CustomerFetcher> {
 							results.getString("lastNm")), 
 					new Address((results.getString("address") != null) ? results.getString("address") : ""),
 					results.getString("phoneNum"), 
-					new CartHandler(fetcher.connector).getCartById(results.getString("curCart")));
+					new CartHandler(fetcher.connector).getById(results.getString("curCart")));
 			}
 		} catch(SQLException e) {
 			System.err.println(this.getClass().getName() + ":" + e.getMessage());

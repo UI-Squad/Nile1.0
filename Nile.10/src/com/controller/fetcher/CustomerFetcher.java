@@ -92,7 +92,7 @@ public class CustomerFetcher extends DataFetcher {
 	 * @param curCart
 	 */
 	public void addCustomer(String email, String password, String customerId, String firstNm,
-							String middleNm, String lastNm, String address, int phoneNum, String curCart) {
+							String middleNm, String lastNm, String address, String phoneNum, String curCart) {
 		clearMaps();
 		sql = "INSERT INTO Customers VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		stringMap.put(1, email);
@@ -102,7 +102,7 @@ public class CustomerFetcher extends DataFetcher {
 		stringMap.put(5, middleNm);
 		stringMap.put(6, lastNm);
 		stringMap.put(7, address);
-		intMap.put(8, phoneNum);
+		stringMap.put(8, phoneNum);
 		stringMap.put(9, curCart);
 		updateData();
 	}

@@ -16,7 +16,7 @@ public class Order {
 	/** The date this order was shipped */
 	private Calendar shipDt;
 	/** The tracking number for this order */
-	private int trackNm;
+	private String trackNm;
 	
 	/**
 	 * Constructs a new order consisting of an Order Id, a cart containing items purchased,
@@ -28,7 +28,7 @@ public class Order {
 	 * @param shipDt Calendar object specifying the date the order was shipped
 	 * @param trackNm Integer value specifying the tracking number of the order
 	 */
-	public Order(String orderId, Cart cart, Calendar orderDt, Calendar shipDt, int trackNm) {
+	public Order(String orderId, Cart cart, Calendar orderDt, Calendar shipDt, String trackNm) {
 		this.orderId = orderId;
 		this.cart = cart;
 		this.orderDt = orderDt;
@@ -50,7 +50,7 @@ public class Order {
 	 * @param shipDt Calendar object specifying the date the order was shipped
 	 */
 	public Order(String orderId, Cart cart, Calendar orderDt, Calendar shipDt) {
-		this(orderId, cart, orderDt, shipDt, 0); //tracking number zero by default
+		this(orderId, cart, orderDt, shipDt, "none"); //tracking number zero by default
 	}
 	
 	/**
@@ -132,7 +132,7 @@ public class Order {
 	 * Changes this order's tracking number to a new tracking number.
 	 * @param trackNm Integer value specifying the new tracking number for this order
 	 */
-	public void setTrackingNumber(int trackNm) {
+	public void setTrackingNumber(String trackNm) {
 		this.trackNm = trackNm;
 	}
 	
@@ -140,7 +140,7 @@ public class Order {
 	 * Returns the tracking number for this order.
 	 * @return Integer value representing the tracking number for this order
 	 */
-	public int getTrackingNumber() {
+	public String getTrackingNumber() {
 		return trackNm;
 	}
 	
