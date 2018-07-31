@@ -38,10 +38,9 @@ public class InventoryServlet extends HttpServlet {
     }
     
     public void doProcess(HttpServletRequest request, HttpServletResponse response) {
+    	Connector connector = new Connector();
     	ArrayList<Item> inventory = new ArrayList<Item>(); //arrayList for JSP page
-    	Connector connector = new Connector(); //connector to database
     	try {
-    	
     		if(request.getParameter("dept") == null){ //inventory page
     			request.setAttribute("dept", "Inventory");
             	String sort = ((String)request.getParameter("sort") != null) 
@@ -71,7 +70,7 @@ public class InventoryServlet extends HttpServlet {
     		}else { //categories page
     			String dept = (String)request.getParameter("dept");
     			request.setAttribute("dept", request.getParameter("dept"));
-    			inventory = new InventoryHandler(connector).getByDept(dept);
+    			inventory = new InventoryHandler(connector).getByDept(dept.toLowerCase());
     		}
         	request.setAttribute("inventory", inventory);
         	request.getRequestDispatcher("inventory.jsp").forward(request, response);
@@ -81,6 +80,7 @@ public class InventoryServlet extends HttpServlet {
     		connector.closeConnection();
     	}
     }
+   
 }
 
 

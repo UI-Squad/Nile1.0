@@ -293,12 +293,57 @@ navigation links stack on top of each other instead of next to each other */
 				Categories <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="inventory?dept=electronics">Electronics</a> 
-				<a href="inventory?dept=clothing">Clothing</a> 
-				<a href="inventory?dept=books">Books</a>
-				<a href="inventory?dept=auto">Automotive</a> 
-				<a href="inventory?dept=home">Home</a> 
-				<a href="viewAllPage.jsp">View All</a>
+				<%
+					String dept = (String)request.getAttribute("dept");
+					if(dept.equals("Electronics")){
+						out.println("<a href=\"inventory?dept=Electronics\">Electronics</a> "
+								+ "class = \"active\">Electronics</a>");
+						out.println("<a href=\"inventory?dept=Clothing\">Clothing</a>");
+						out.println("<a href=\"inventory?dept=Books\">Books</a>");
+						out.println("<a href=\"inventory?dept=Auto\">Automotive</a>");
+						out.println("<a href=\"inventory?dept=Home\">Home</a>");
+						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
+					}else if(dept.equals("Clothing")){
+						out.println("<a href=\"inventory?dept=Electronics\">Electronics</a>");
+						out.println("<a href=\"inventory?dept=Clothing\">Clothing</a> "
+						+ "class = \"active\">Clothing</a>");
+						out.println("<a href=\"inventory?dept=Books\">Books</a>");
+						out.println("<a href=\"inventory?dept=Auto\">Automotive</a>");
+						out.println("<a href=\"inventory?dept=Home\">Home</a>");
+						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
+					}else if(dept.equals("Books")){
+						out.println("<a href=\"inventory?dept=Electronics\">Electronics</a>");
+						out.println("<a href=\"inventory?dept=Clothing\">Clothing</a>");
+						out.println("<a href=\"inventory?dept=Books\">Books</a>"
+								+ "class = \"active\">Books</a>");
+						out.println("<a href=\"inventory?dept=Auto\">Automotive</a>");
+						out.println("<a href=\"inventory?dept=Home\">Home</a>");
+						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
+					}else if(dept.equals("Auto")){
+						out.println("<a href=\"inventory?dept=Electronics\">Electronics</a>");
+						out.println("<a href=\"inventory?dept=Clothing\">Clothing</a>");
+						out.println("<a href=\"inventory?dept=Books\">Books</a>");
+						out.println("<a href=\"inventory?dept=Auto\">Automotive</a>"
+								+ "class = \"active\">Automotive</a>");
+						out.println("<a href=\"inventory?dept=Home\">Home</a>");
+						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
+					}else if(dept.equals("Home")){
+						out.println("<a href=\"inventory?dept=Electronics\">Electronics</a>");
+						out.println("<a href=\"inventory?dept=Clothing\">Clothing</a>");
+						out.println("<a href=\"inventory?dept=Books\">Books</a>");
+						out.println("<a href=\"inventory?dept=Auto\">Automotive</a>");
+						out.println("<a href=\"inventory?dept=Home\">Home</a>"
+								+ "class = \"active\">Home</a>");
+						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
+					}else{
+						out.println("<a href=\"inventory?dept=Electronics\">Electronics</a>");
+						out.println("<a href=\"inventory?dept=Clothing\">Clothing</a>");
+						out.println("<a href=\"inventory?dept=Books\">Books</a>");
+						out.println("<a href=\"inventory?dept=Auto\">Automotive</a>");
+						out.println("<a href=\"inventory?dept=Home\">Home</a>");
+						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
+					}
+					%>
 			</div>
 		</div>
 
@@ -324,7 +369,7 @@ navigation links stack on top of each other instead of next to each other */
 			%>
 			<div class="card">
 
-				<h2>Inventory</h2>
+				<h2><% out.println(request.getAttribute("dept")); %></h2>
 				
 				<!-- JSP Scriplet that generates   -->
 				<%
