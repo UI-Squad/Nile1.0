@@ -20,6 +20,9 @@ import application.model.Item;
 @WebServlet("/inventory")
 public class InventoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static final String LOWTOHIGH = "1";
+	private static final String HIGHTOLOW = "2";
        
     public InventoryServlet() {
         super();
@@ -28,17 +31,19 @@ public class InventoryServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     	      throws ServletException, IOException {  
-    	/*HttpSession session = request.getSession(true);
-    	Controller controller;
-    	if(session.isNew()) {
-    		controller = new Controller();
-    		session.setAttribute("controller", controller);
+    	ArrayList<Item> inventory = new ArrayList<Item>(); //arrayList for JSP page
+    	Connector connector = new Connector(); //connector to database
+    	String sort = ((String)request.getParameter("value") != null) 
+    			? (String)request.getParameter("value") :
+    				""; //sorting value
+    	//sorting
+    	if(sort.equals(LOWTOHIGH)) {
+    		inventory = new Controller(connector).inventoryHandle().getAllSortBy("price", false);
+    	}else if(sort.equals(HIGHTOLOW)) {
+    		inventory = new Controller(connector).inventoryHandle().getAllSortBy("price", true);
     	}else {
-    	  	controller = (Controller)session.getAttribute("controller");
-    	}*/
-    	//ArrayList<Item> inventory = controller.inventoryHandle().getAll();
-    	Connector connector = new Connector();
-    	ArrayList<Item> inventory = new Controller(connector).inventoryHandle().getAll();
+    		inventory = new Controller(connector).inventoryHandle().getAll();
+    	}
     	request.setAttribute("inventory", inventory);
     	connector.closeConnection();
     	request.getRequestDispatcher("inventory.jsp").forward(request, response);

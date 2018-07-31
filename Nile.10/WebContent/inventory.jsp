@@ -302,7 +302,7 @@ navigation links stack on top of each other instead of next to each other */
 			</div>
 		</div>
 
-		<a href="cartPage.jsp">Cart</a> <a href="inventoryPage.jsp" class="active">Inventory</a>
+		<a href="cartPage.jsp">Cart</a> <a href="inventory" class="active">Inventory</a>
 		<a href="loginPage.jsp" style="float: right">Sign In</a>
 
 		<!-- Search Bar -->
@@ -330,7 +330,6 @@ navigation links stack on top of each other instead of next to each other */
 				<%
 				
 				for(int i = 0; i < items.size(); i++){
-					
 					String itemName = items.get(i).getItemName();
 					String itemDescription = items.get(i).getDescription();
 					double itemPrice = items.get(i).getPrice();
@@ -387,9 +386,9 @@ navigation links stack on top of each other instead of next to each other */
 		<div class="leftcolumn">
 			<div class="card">
 				<h3>Filter/Sort</h3>
-				<a href="./filteredViews/byPriceLowInventory.jsp">Price: Low to High</a>
+				<a href="inventory?value=1">Price: Low to High</a>
 				<p></p>
-				<a href="./filteredViews/byPriceHighInventory.jsp">Price: High to Low</a>
+				<a href="inventory?value=2">Price: High to Low</a>
 			</div>
 		</div>
 	</div>
