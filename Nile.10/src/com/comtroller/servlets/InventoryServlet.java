@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import com.controller.Controller;
 import com.controller.fetcher.Connector;
+import com.controller.handler.InventoryHandler;
 
 import application.model.Item;
 
@@ -29,24 +29,57 @@ public class InventoryServlet extends HttpServlet {
 
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-    	      throws ServletException, IOException {  
+    public void doGet(HttpServletRequest request, HttpServletResponse response){  
+    	doProcess(request, response);
+    }
+    
+    public void doPost(HttpServletRequest request, HttpServletResponse response){ 
+    	doProcess(request, response);
+    }
+    
+    public void doProcess(HttpServletRequest request, HttpServletResponse response) {
     	ArrayList<Item> inventory = new ArrayList<Item>(); //arrayList for JSP page
     	Connector connector = new Connector(); //connector to database
-    	String sort = ((String)request.getParameter("value") != null) 
-    			? (String)request.getParameter("value") :
-    				""; //sorting value
-    	//sorting
-    	if(sort.equals(LOWTOHIGH)) {
-    		inventory = new Controller(connector).inventoryHandle().getAllSortBy("price", false);
-    	}else if(sort.equals(HIGHTOLOW)) {
-    		inventory = new Controller(connector).inventoryHandle().getAllSortBy("price", true);
-    	}else {
-    		inventory = new Controller(connector).inventoryHandle().getAll();
+    	try {
+    	
+    		if(request.getParameter("dept") == null){ //inventory page
+    			request.setAttribute("dept", "Inventory");
+            	String sort = ((String)request.getParameter("sort") != null) 
+            			? (String)request.getParameter("sort") :
+            				""; //sorting value
+            	String search = (String)request.getParameter("value");
+            	//sorting and searching
+            	if(sort.equals(LOWTOHIGH)) {
+            		if(search != null) {
+            			inventory = new InventoryHandler(connector).searchAndSort(search, "price", false);
+            		}else{
+            			inventory = new InventoryHandler(connector).getAllSortBy("price", false);
+            		}
+            	}else if(sort.equals(HIGHTOLOW)) {
+            		if(search != null) {
+            			inventory = new InventoryHandler(connector).searchAndSort(search, "price", true);
+            		}else {
+            			inventory = new InventoryHandler(connector).getAllSortBy("price", true);
+            		}		
+            	}else {
+            		if(search != null) {
+            			inventory = new InventoryHandler(connector).search(search);
+            		}else {
+            			inventory = new InventoryHandler(connector).getAll();
+            		}	
+            	}
+    		}else { //categories page
+    			String dept = (String)request.getParameter("dept");
+    			request.setAttribute("dept", request.getParameter("dept"));
+    			inventory = new InventoryHandler(connector).getByDept(dept);
+    		}
+        	request.setAttribute("inventory", inventory);
+        	request.getRequestDispatcher("inventory.jsp").forward(request, response);
+    	}catch(Exception e) {
+    		System.err.println(this.getClass().getName() + ":" + e.getMessage());
+    	}finally {
+    		connector.closeConnection();
     	}
-    	request.setAttribute("inventory", inventory);
-    	connector.closeConnection();
-    	request.getRequestDispatcher("inventory.jsp").forward(request, response);
     }
 }
 

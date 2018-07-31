@@ -178,12 +178,36 @@ public class InventoryHandler extends DataHandler<InventoryFetcher>{
 	}
 	
 	/**
+	 * 
+	 * @param dept
+	 * @return
+	 */
+	public ArrayList<Item> getByDept(String dept){
+		results = fetcher.fetchByDept(dept);
+		parseResults();
+		return items;
+	}
+	
+	/**
 	 * Performs a search for items in the Inventory database.
 	 * @param search String literal specifying the search parameters
 	 * @return ArrayList of item objects
 	 */
 	public ArrayList<Item> search(String search){
 		results = fetcher.search(search);
+		parseResults();
+		return items;
+	}
+	
+	/**
+	 * 
+	 * @param search
+	 * @param column
+	 * @param descending
+	 * @return
+	 */
+	public ArrayList<Item> searchAndSort(String search, String column, boolean descending){
+		results = fetcher.searchAndSort(search, column, descending);
 		parseResults();
 		return items;
 	}

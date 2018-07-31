@@ -293,11 +293,11 @@ navigation links stack on top of each other instead of next to each other */
 				Categories <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="electronicsPage.jsp">Electronics</a> 
-				<a href="clothingPage.jsp">Clothing</a> 
-				<a href="booksPage.jsp">Books</a>
-				<a href="autoPage.jsp">Automotive</a> 
-				<a href="homePage.jsp">Home</a> 
+				<a href="inventory?dept=electronics">Electronics</a> 
+				<a href="inventory?dept=clothing">Clothing</a> 
+				<a href="inventory?dept=books">Books</a>
+				<a href="inventory?dept=auto">Automotive</a> 
+				<a href="inventory?dept=home">Home</a> 
 				<a href="viewAllPage.jsp">View All</a>
 			</div>
 		</div>
@@ -307,7 +307,7 @@ navigation links stack on top of each other instead of next to each other */
 
 		<!-- Search Bar -->
 		<div class="search-container">
-			<form name="searchBar" action="searchResponseServlet"
+			<form name="searchBar" action="inventory"
 				onsubmit="return validateForm()" method="POST">
 				<input type="text" name="value" placeholder="Search">
 				<button type="submit">
@@ -386,9 +386,9 @@ navigation links stack on top of each other instead of next to each other */
 		<div class="leftcolumn">
 			<div class="card">
 				<h3>Filter/Sort</h3>
-				<a href="inventory?value=1">Price: Low to High</a>
+				<a href="inventory?sort=1">Price: Low to High</a>
 				<p></p>
-				<a href="inventory?value=2">Price: High to Low</a>
+				<a href="inventory?sort=2">Price: High to Low</a>
 			</div>
 		</div>
 	</div>

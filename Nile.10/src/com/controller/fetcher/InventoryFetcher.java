@@ -181,10 +181,38 @@ public class InventoryFetcher extends DataFetcher {
 		updateData();
 	}
 	
+	/**
+	 * 
+	 * @param search
+	 * @return
+	 */
 	public ResultSet search(String search) {
 		clearMaps();
 		sql = "SELECT i.* from Inventory i WHERE i.name LIKE ? ? ? OR i.description LIKE ? ? ? "
 				+ "OR i.dept LIKE ? ? ?";
+		stringMap.put(1, "%");
+		stringMap.put(2, search);
+		stringMap.put(3, "%");
+		stringMap.put(4, "%");
+		stringMap.put(5, search);
+		stringMap.put(6, "%");
+		stringMap.put(7, "%");
+		stringMap.put(8, search);
+		stringMap.put(9, "%");
+		return fetchData();
+	}
+	
+	/**
+	 * 
+	 * @param search
+	 * @param column
+	 * @param descending
+	 * @return
+	 */
+	public ResultSet searchAndSort(String search, String column, boolean descending) {
+		clearMaps();
+		sql = "SELECT i.* from Inventory i WHERE i.name LIKE ? ? ? OR i.description LIKE ? ? ? "
+				+ "OR i.dept LIKE ? ? ? ORDER BY " + column + ((descending) ? " DESC" : " ASC");;
 		stringMap.put(1, "%");
 		stringMap.put(2, search);
 		stringMap.put(3, "%");
