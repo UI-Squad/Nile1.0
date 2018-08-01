@@ -294,12 +294,8 @@ navigation links stack on top of each other instead of next to each other */
 				Categories <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<%
-					String dept = (String)request.getAttribute("dept");
-					if(dept == null) dept = "";
-				%> 
-					
-				   <nt:Categories category = "<%=dept%>" />
+				<% String dept = (String)request.getAttribute("dept"); %> 
+				<nt:Categories category = "<%=dept%>" />
 				
 
 			</div>
@@ -327,83 +323,26 @@ navigation links stack on top of each other instead of next to each other */
 	</div>
 
 	<!-- Inventory page below nav bar -->
+	<% ArrayList<Item> items = new ItemListCast().convert(request.getAttribute("inventory")); %>		
+	<div class="row">
+		<div class="card">
+			<h2><% out.println(dept); %></h2>
+			<nt:Inventory inventory = "<%= items %>" />
+		</div> <!-- end divider for card  -->	
+	</div> <!-- End row divider  -->
 	
-			<%
-				ArrayList<Item> items = new ItemListCast().convert(request.getAttribute("inventory"));
-			%>
-			<div class="card">
-
-				<h2><% out.println(request.getAttribute("dept")); %></h2>
-				
-				<!-- JSP Scriplet that generates   -->
-				<%
-				
-				for(int i = 0; i < items.size(); i++){
-					String itemName = items.get(i).getItemName();
-					String itemDescription = items.get(i).getDescription();
-					double itemPrice = items.get(i).getPrice();
-					String itemSummary = "";
-					
-					String itemID = items.get(i).getItemId();
-					int itemQuantity = items.get(i).getQuantity();
-					
-					if(itemDescription.length() > 30){
-						itemSummary = (itemDescription.substring(0, 24) + "...");
-					}else{
-						itemSummary=itemDescription;
-					}
-					
-				
-					
-					out.println("<div class=\"grid-container\"><div class=\"item1\">");
-					
-					//ItemProductForm
-					out.println("<form name=\"itemNameForm"+i+"\" action=\"productDetailServlet\" method=\"POST\">");
-					out.println("<input type=\"hidden\" name=\"itemName\" value=\""+itemName+"\">");
-					out.println("<input type=\"hidden\" name=\"itemDescription\" value=\""+itemDescription+"\">");
-					out.println("<input type=\"hidden\" name=\"itemPrice\" value=\""+itemPrice+"\">");
-					out.println("<input type=\"hidden\" name=\"itemID\" value=\""+itemID+"\">");
-					out.println("</form>");
-					
-					//Product Listing Information
-					out.println("<a href=\"#\" onclick=\"document.itemNameForm"+i+".submit()\">");
-					out.println("<img src=\"./productImages/"
-					+ itemName + ".jpg\" align=\"middle\" style=\"width: 170px\" alt=\"product\"></a>");
-					out.println("</div>");
-					out.println("<div class=\"item2\">");
-					out.println("<a href=\"#\" onclick=\"document.itemNameForm"+i+".submit()\">"+itemName+"</a>");
-  					out.println("</div><div class=\"item3\"></div>");
-					out.println("<div class=\"item4\">");
- 					out.println(itemSummary);
- 					out.println("</div>");
-					out.println("<div class=\"item5\">");
- 					out.println("$"+itemPrice);
- 					out.println("</div><div class=\"item6\"></div>");		
-					out.println("<div class=\"item7\"></div></div>");	
-					out.println("<hr>");
-				}
-				
-				%>
-
-			</div>
-			<!-- end divider for card  -->
-
-		</div>
-		<!-- End row divider  -->
-
-		<!-- Options -->
-		<div class="leftcolumn">
-			<div class="card">
-				<h3>Filter/Sort</h3>
-				<a href="inventory?sort=1">Price: Low to High</a>
-				<p></p>
-				<a href="inventory?sort=2">Price: High to Low</a>
-			</div>
+	<!-- Options -->
+	<div class="leftcolumn">
+		<div class="card">
+			<h3>Filter/Sort</h3>
+			<a href="inventory?sort=1">Price: Low to High</a>
+			<p></p>
+			<a href="inventory?sort=2">Price: High to Low</a>
 		</div>
 	</div>
 	
 	
-		<div class="footer">
+	<div class="footer">
 		<h2>
 			<a href="contactUsPage.jsp"><font color="000000">Contact Us</font></a>
 		</h2>

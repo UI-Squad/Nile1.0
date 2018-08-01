@@ -4,6 +4,8 @@ package com.tags;
  */
 
 import java.io.IOException;
+
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
@@ -17,7 +19,7 @@ public class CategoriesTag extends SimpleTagSupport{
 	
 	public void doTag() throws JspException, IOException{
 		JspWriter out = getJspContext().getOut();
-		System.out.println(category);
+		if(category == null) category = "";
 		String electronics = (!category.equals("Electronics")) ?
 				"<a href=\"inventory?dept=Electronics\">Electronics</a>" :
 				"<a href=\"inventory?dept=Electronics\" class = \"active\">Electronics</a>";

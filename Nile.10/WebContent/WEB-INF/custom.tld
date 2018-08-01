@@ -12,4 +12,14 @@
           <rtexprvalue>true</rtexprvalue>
         </attribute>
    </tag>
+   <tag>
+      <name>Inventory</name>
+      <tag-class>com.tags.InventoryTag</tag-class>
+	 <body-content>empty</body-content>
+        <attribute>
+          <name>inventory</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+        </attribute>
+   </tag>
 </taglib>
