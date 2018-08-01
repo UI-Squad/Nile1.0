@@ -1,4 +1,4 @@
-package com.comtroller.servlets;
+package com.controller.servlets;
 /**
  * Serves inventory data to inventory jsp.
  * @author Shane Bogard

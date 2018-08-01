@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="application.model.Item" import="com.controller.handler.InventoryHandler"
 	import="java.util.ArrayList" import="java.util.Collections" import="com.controller.casts.ItemListCast"%>
+<%@ taglib prefix = "nt" uri = "WEB-INF/custom.tld"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -295,50 +296,12 @@ navigation links stack on top of each other instead of next to each other */
 			<div class="dropdown-content">
 				<%
 					String dept = (String)request.getAttribute("dept");
-					if(dept.equals("Electronics")){
-						out.println("<a href=\"inventory?dept=Electronics\" class = \"active\">Electronics</a>");
-						out.println("<a href=\"inventory?dept=Clothing\">Clothing</a>");
-						out.println("<a href=\"inventory?dept=Books\">Books</a>");
-						out.println("<a href=\"inventory?dept=Auto\">Automotive</a>");
-						out.println("<a href=\"inventory?dept=Home\">Home</a>");
-						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
-					}else if(dept.equals("Clothing")){
-						out.println("<a href=\"inventory?dept=Electronics\">Electronics</a>");
-						out.println("<a href=\"inventory?dept=Clothing\"class = \"active\">Clothing</a> ");
-						out.println("<a href=\"inventory?dept=Books\">Books</a>");
-						out.println("<a href=\"inventory?dept=Auto\">Automotive</a>");
-						out.println("<a href=\"inventory?dept=Home\">Home</a>");
-						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
-					}else if(dept.equals("Books")){
-						out.println("<a href=\"inventory?dept=Electronics\">Electronics</a>");
-						out.println("<a href=\"inventory?dept=Clothing\">Clothing</a>");
-						out.println("<a href=\"inventory?dept=Books\" class = \"active\">Books</a>");
-						out.println("<a href=\"inventory?dept=Auto\">Automotive</a>");
-						out.println("<a href=\"inventory?dept=Home\">Home</a>");
-						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
-					}else if(dept.equals("Auto")){
-						out.println("<a href=\"inventory?dept=Electronics\">Electronics</a>");
-						out.println("<a href=\"inventory?dept=Clothing\">Clothing</a>");
-						out.println("<a href=\"inventory?dept=Books\">Books</a>");
-						out.println("<a href=\"inventory?dept=Auto\" class = \"active\">Automotive</a>");
-						out.println("<a href=\"inventory?dept=Home\">Home</a>");
-						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
-					}else if(dept.equals("Home")){
-						out.println("<a href=\"inventory?dept=Electronics\">Electronics</a>");
-						out.println("<a href=\"inventory?dept=Clothing\">Clothing</a>");
-						out.println("<a href=\"inventory?dept=Books\">Books</a>");
-						out.println("<a href=\"inventory?dept=Auto\">Automotive</a>");
-						out.println("<a href=\"inventory?dept=Home\" class = \"active\">Home</a>");
-						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
-					}else{
-						out.println("<a href=\"inventory?dept=Electronics\">Electronics</a>");
-						out.println("<a href=\"inventory?dept=Clothing\">Clothing</a>");
-						out.println("<a href=\"inventory?dept=Books\">Books</a>");
-						out.println("<a href=\"inventory?dept=Auto\">Automotive</a>");
-						out.println("<a href=\"inventory?dept=Home\">Home</a>");
-						out.println("<a href=\"viewAllPage.jsp\">View All</a>");
-					}
-					%>
+					if(dept == null) dept = "";
+				%> 
+					
+				   <nt:Categories category = "<%=dept%>" />
+				
+
 			</div>
 		</div>
 		<%
