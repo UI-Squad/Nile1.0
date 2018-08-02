@@ -9,21 +9,27 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 import application.model.Item;
 
 public class InventoryTag extends SimpleTagSupport{
-	private ArrayList<Item> items;
+	private String dept;
+	private ArrayList<Item> inventory;
+	
+	public void setDept(String dept) {
+		this.dept = dept;
+	}
 
 	public void setInventory(ArrayList<Item> items) {
-		this.items = items;
+		this.inventory = items;
 	}
 	
 	public void doTag() throws JspException, IOException{
 		JspWriter out = getJspContext().getOut();
-		if(items == null) items = new ArrayList<Item>();
-		for(int i = 0; i < items.size(); i++){
-			String itemName = items.get(i).getItemName();
-			String itemDescription = items.get(i).getDescription();
-			double itemPrice = items.get(i).getPrice();
+		if(inventory == null) inventory = new ArrayList<Item>();
+		out.println("<h2>" + dept + "</h2>");		
+		for(int i = 0; i < inventory.size(); i++){
+			String itemName = inventory.get(i).getItemName();
+			String itemDescription = inventory.get(i).getDescription();
+			double itemPrice = inventory.get(i).getPrice();
 			String itemSummary = "";
-			String itemID = items.get(i).getItemId();
+			String itemID = inventory.get(i).getItemId();
 			if(itemDescription.length() > 30){
 				itemSummary = (itemDescription.substring(0, 24) + "...");
 			}else{

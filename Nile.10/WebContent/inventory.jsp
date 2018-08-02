@@ -2,13 +2,11 @@
 	pageEncoding="UTF-8" import="application.model.Item" import="com.controller.handler.InventoryHandler"
 	import="java.util.ArrayList" import="java.util.Collections" import="com.controller.casts.ItemListCast"%>
 <%@ taglib prefix = "nt" uri = "WEB-INF/custom.tld"%>
-
+<% String dept = (String)request.getAttribute("dept"); %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Nile Shopping Service: Inventory</title>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>Nile Shopping Service: <%=dept%></title>
 <style type="text/css">
 * {
 	box-sizing: border-box;
@@ -166,6 +164,8 @@ body {
 	clear: both;
 }
 
+
+
 /* Create two unequal columns that floats next to each other */
 /* Left column */
 .leftcolumn {
@@ -178,6 +178,7 @@ body {
 	top: 20px;
 }
 
+/* Right column */
 /* Right column */
 .rightcolumn {
 	float: right;
@@ -216,7 +217,7 @@ body {
 /* Responsive layout - when the screen is less than 800px wide, make the 
 two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 800px) {
-	.leftcolumn, .rightcolumn {
+	.col-container {
 		width: 100%;
 		padding: 0;
 	}
@@ -294,10 +295,7 @@ navigation links stack on top of each other instead of next to each other */
 				Categories <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<% String dept = (String)request.getAttribute("dept"); %> 
 				<nt:Categories category = "<%=dept%>" />
-				
-
 			</div>
 		</div>
 		<%
@@ -311,36 +309,37 @@ navigation links stack on top of each other instead of next to each other */
 		<a href="loginPage.jsp" style="float: right">Sign In</a>
 
 		<!-- Search Bar -->
-		<div class="search-container">
-			<form name="searchBar" action="inventory"
-				onsubmit="return validateForm()" method="POST">
-				<input type="text" name="value" placeholder="Search">
-				<button type="submit">
-					<i class="fa fa-search"></i>
-				</button>
-			</form>
+			<div class="search-container">
+				<form name="searchBar" action="inventory"
+					onsubmit="return validateForm()" method="POST">
+					<input type="text" name="value" placeholder="Search">
+					<button type="submit">
+						<i class="fa fa-search"></i>
+					</button>
+				</form>
+			</div>
 		</div>
-	</div>
 
 	<!-- Inventory page below nav bar -->
-	<% ArrayList<Item> items = new ItemListCast().convert(request.getAttribute("inventory")); %>		
-	<div class="row">
-		<div class="card">
-			<h2><% out.println(dept); %></h2>
-			<nt:Inventory inventory = "<%= items %>" />
-		</div> <!-- end divider for card  -->	
-	</div> <!-- End row divider  -->
-	
-	<!-- Options -->
-	<div class="leftcolumn">
-		<div class="card">
-			<h3>Filter/Sort</h3>
-			<a href="inventory?sort=1">Price: Low to High</a>
-			<p></p>
-			<a href="inventory?sort=2">Price: High to Low</a>
-		</div>
-	</div>
-	
+	<% ArrayList<Item> items = new ItemListCast().convert(request.getAttribute("inventory")); %>
+	<div class="row">	
+		<div class="rightcolumn">
+			<div class="card"> <!-- items card -->
+				<!-- print items by selected category -->
+				<nt:Inventory dept = "<%= dept %>" inventory = "<%= items %>" />
+			</div> <!-- end items card -->
+		</div> <!-- end right column divider -->
+
+		<!-- Sorting Options -->
+		<div class="leftcolumn">
+			<div class="card">
+				<h3>Filter/Sort</h3>
+				<a href="inventory?sort=1">Price: Low to High</a>
+				<p></p>
+				<a href="inventory?sort=2">Price: High to Low</a>
+			</div>
+		</div> <!-- end left column diver -->
+	</div> <!-- end row div -->
 	
 	<div class="footer">
 		<h2>

@@ -21,5 +21,10 @@
           <required>true</required>
           <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+          <name>dept</name>
+          <required>true</required>
+          <rtexprvalue>true</rtexprvalue>
+        </attribute>
    </tag>
 </taglib>
