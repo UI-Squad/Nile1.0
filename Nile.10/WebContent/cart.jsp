@@ -1,36 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="application.model.Item" import="com.controller.handler.InventoryHandler"
-	import="java.util.ArrayList" import="java.util.Collections" import="com.controller.casts.ItemListCast"%>
+	pageEncoding="UTF-8" import="com.controller.handler.CartHandler"
+	import="application.model.Cart"%>
 <%@ taglib prefix = "nt" uri = "WEB-INF/custom.tld"%>
-<% String dept = (String)request.getAttribute("dept"); %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Nile Shopping Service: <%=dept%></title>
+<title>Shopping Cart</title>
+<link rel="stylesheet" type="text/css" href="css/styles.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style type="text/css">
 * {
 	box-sizing: border-box;
-}
-
-a{
-	color: black;
-}
-
-a:link {
-    text-decoration: none;
-}
-
-a:visited {
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: none;
-    color:blue;
-}
-
-a:active {
-    text-decoration: underline;
 }
 
 body {
@@ -164,25 +145,10 @@ body {
 	clear: both;
 }
 
-
-
-/* Create two unequal columns that floats next to each other */
-/* Left column */
-.leftcolumn {
-	position: -webkit-sticky;
-	position: sticky;
-	float: left;
-	width: 20%;
-	background-color: #f1f1f1;
-	padding-right: 20px;
-	top: 20px;
-}
-
-/* Right column */
 /* Right column */
 .rightcolumn {
 	float: right;
-	width: 80%;
+	width: 100%;
 }
 
 /* Fake image */
@@ -217,7 +183,7 @@ body {
 /* Responsive layout - when the screen is less than 800px wide, make the 
 two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 800px) {
-	.col-container {
+	.leftcolumn, .rightcolumn {
 		width: 100%;
 		padding: 0;
 	}
@@ -278,8 +244,33 @@ navigation links stack on top of each other instead of next to each other */
 	}
 </script>
 
+<!-- Scripts that validate the cart and give the cart page a waiting cursor  -->
+<script type="text/javascript">
+
+	function clearWait(){
+		document.body.style.cursor='wait;'
+		
+		window.onload=function(){document.body.style.cursor='default';}
+	}
+	
+	function validateCart() {
+		var table = document.getElementById('cart').getElementsByTagName('tr');
+		var tableRows = table.length;
+			if(tableRows < 5){
+				document.getElementById('submitbtn').style.visibility = 'hidden';
+			} else {
+				document.getElementById('submitbtn').style.visibility = 'visible';
+		}
+	}
+	
+	function startUp(){
+		clearWait();
+		validateCart();
+	}
+</script>
+
 </head>
-<body>
+<body onload= "startUp()">
 
 	<div class="header">
 		<img src="./Images/siteLogo.jpeg" style="height: 300px;" alt="">
@@ -290,60 +281,149 @@ navigation links stack on top of each other instead of next to each other */
 		<a href="Website.html">Home</a>
 
 		<!-- Drop down sub menu for categories in navigation bar  -->
+		<!-- Drop down sub menu for categories in navigation bar  -->
 		<div class="dropdown">
 			<button class="dropbtn">
 				Categories <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<nt:Categories category = "<%=dept%>" />
+				<nt:Categories category = "Cart" />
 			</div>
 		</div>
-		<%
-			 if(dept.equals("Inventory")){
-				 out.println("<a href=\"user?page=cart\">Cart</a> <a href=\"inventory\" class=\"active\">Inventory</a>");
-			 }else{
-				 out.println("<a href=\"user?page=cart\">Cart</a> <a href=\"inventory\">Inventory</a>");
-			 }
-		%>
-		
-		<a href="loginPage.jsp" style="float: right">Sign In</a>
+
+		<a href="user?page=cart" class="active">Cart</a> <a
+			href="inventory">Inventory</a> <a href="loginPage.jsp"
+			style="float: right">Sign In</a>
 
 		<!-- Search Bar -->
-			<div class="search-container">
-				<form name="searchBar" action="inventory"
-					onsubmit="return validateForm()" method="POST">
-					<input type="text" name="value" placeholder="Search">
-					<button type="submit">
-						<i class="fa fa-search"></i>
-					</button>
-				</form>
-			</div>
+		<div class="search-container">
+			<form name="searchBar" action="searchResponseServlet"
+				onsubmit="return validateForm()" method="POST">
+				<input type="text" name="value" placeholder="Search">
+				<button type="submit">
+					<i class="fa fa-search"></i>
+				</button>
+			</form>
 		</div>
+	</div>
+
 
 	<!-- Inventory page below nav bar -->
-	<% ArrayList<Item> items = new ItemListCast().convert(request.getAttribute("inventory")); %>
-	<div class="row">	
+	<div class="row">
 		<div class="rightcolumn">
-			<div class="card"> <!-- items card -->
-				<!-- print items by selected category -->
-				<nt:Inventory dept = "<%= dept %>" inventory = "<%= items %>" />
-			</div> <!-- end items card -->
-		</div> <!-- end right column divider -->
-
-		<!-- Sorting Options -->
-		<div class="leftcolumn">
 			<div class="card">
-				<h3>Filter/Sort</h3>
-				<a href="inventory?sort=1">Price: Low to High</a>
-				<p></p>
-				<a href="inventory?sort=2">Price: High to Low</a>
+				<div id="w">
+				
+					<%
+							//CartHandler cartHandler = new CartHandler();
+							// This Is a User Cart:  Cart cart = cartHandler.getCart("car001");
+							//Cart cart = cartHandler.getById("car000");	
+							Cart cart = new Cart();
+					%>
+					<header id="title">
+					<h1>Shopping Cart</h1>
+					</header>
+					<% 
+					for (int k = 0; k < cart.getSize(); k++) {
+					
+					
+					out.println("<form name=\"removeItemForm"+k+"\" action=\"removeFromCartServlet\" method=\"POST\">");
+					out.println("<input type=\"hidden\" name=\"itemID\" value=\""+cart.getCartItems().get(k).getItemId()+"\">");
+					out.println("</form>");
+					}
+					
+					%>
+					
+					<div id="page">
+						<table id="cart">
+							<thead>
+								<tr>
+									<th class="first"></th>
+									<th class="second">Qty</th>
+									<th class="third">Product</th>
+									<th class="fourth">Total</th>
+									<th class="fifth">&nbsp;</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- shopping cart contents -->
+
+								<!-- JSP Scriplet that generates the contents -->
+
+								<%
+									for (int i = 0; i < cart.getSize(); i++) {
+
+										out.println("<tr class=\"productItem\">");
+
+										//Picture
+										out.println("<td><img src=\"./productImages/"
+										+ cart.getCartItems().get(i).getItemName() + ".jpg\" class=\"thumb\" " 
+										+ "style=\"width: 140px\" alt=\"product\"></a></td>");
+										
+										// Quantity
+										out.println("<td><input type=\"number\" value=\"" + cart.getCartItems().get(i).getQuantity()
+												+ "\" min=\"0\" max=\"99\"class=\"qtyinput\"></td>");
+
+										//Name
+										out.println("<td>");
+										out.println(cart.getCartItems().get(i).getItemName());
+										out.println("</td>");
+
+										//Total Item Price
+										out.println("<td>");
+										out.println("$" + cart.getItemTotal(cart.getCartItems().get(i)));
+										out.println("</td>");
+
+										// Remove option 
+										out.println("<td>");
+										out.println("<span class=\"remove\" onclick=\"document.removeItemForm"+i+".submit()\"><img src=\"Images/trash.png\" alt=\"X\"></span>");
+										out.println("</td>");
+										out.println("</tr>");
+									}
+								%>
+								
+
+								<!-- tax + subtotal -->
+								<tr class="extracosts">
+									<td class="light">Shipping:</td>
+									<td colspan="2" class="light"></td>
+									<td>Free</td>
+									<td>&nbsp;</td>
+								</tr>
+								<tr class="totalprice">
+									<td class="light">Total:</td>
+									<td colspan="2">&nbsp;</td>
+									<td colspan="2"><span class="thick"> 
+									<%
+ 										out.println(cart.getCartTotal());
+ 									%>
+									</span></td>
+								</tr>
+								<!-- checkout btn -->
+								<tr class="checkoutrow">
+								<td colspan="5" class="checkout"><a href="personalCusInfoPage.jsp">
+								<button id="submitbtn">Checkout</button></a>
+								</td>								
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+				</div>
+				<!-- end divider for shopping cart  -->
+
 			</div>
-		</div> <!-- end left column diver -->
-	</div> <!-- end row div -->
-	
+			<!-- end divider for card  -->
+
+		</div>
+		<!-- End row divider  -->
+	</div>
+
+
 	<div class="footer">
 		<h2>
-			<a href="contactUs.jsp"><font color="000000">Contact Us</font></a>
+			<a href="contactUsPage.jsp"><font color="000000">Contact
+					Us</font></a>
 		</h2>
 	</div>
 </body>

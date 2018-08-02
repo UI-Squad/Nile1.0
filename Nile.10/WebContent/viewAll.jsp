@@ -291,7 +291,7 @@ navigation links stack on top of each other instead of next to each other */
 
 	<div class="footer">
 		<h2>
-			<a href="contactUsPage.jsp"><font color="000000">Contact Us</font></a>
+			<a href="contactUs.jsp"><font color="000000">Contact Us</font></a>
 		</h2>
 	</div>
 </body>

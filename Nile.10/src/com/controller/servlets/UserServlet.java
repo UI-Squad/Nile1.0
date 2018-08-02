@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.controller.casts.ConnectorCast;
+import com.controller.casts.CustomerCast;
 import com.controller.fetcher.Connector;
 import application.model.Customer;
 
@@ -31,6 +32,14 @@ public class UserServlet extends HttpServlet {
     	session = request.getSession(true);
     	setConnector(session);
     	setUser(session);
+    	try {
+    		if(request.getParameter("page").equals("cart")) { //cart page
+    			request.getRequestDispatcher("cart.jsp").forward(request, response);
+    		}
+    	}catch(Exception e) {
+    		System.err.println(this.getClass().getName() + ":" + e.getMessage());
+    	}
+    		
     	
     }
     
@@ -63,10 +72,23 @@ public class UserServlet extends HttpServlet {
     }
     
     private void setUser(HttpSession session) {
+    	String guestEmail = "Guest";
+		String guestId = "Guest";
     	if(session.isNew()) { //create new customer
-    		
+    		user = new Customer(guestEmail, guestId);
+    		System.out.println("NEW USER CREATED");
+    		session.setAttribute("user", user);
     	}else { //customer already exists
-    		
+    		Customer oldUser = new CustomerCast().convert(session.getAttribute("user"));
+    		if(oldUser != null) {
+    			System.out.println("USER LOCATED");
+    			user = oldUser;
+    		}else {
+    			System.out.println("USER NOT FOUND");
+    			user = new Customer(guestEmail, guestId);
+    			session.setAttribute("user", user);
+    		}
+    		System.out.println(user.toString());
     	}
     }
 

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ taglib prefix = "nt" uri = "WEB-INF/custom.tld"%>
+<% String dept = (String)request.getAttribute("dept"); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -58,16 +60,11 @@
 				Categories <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="electronicsPage.jsp">Electronics</a> 
-				<a href="clothingPage.jsp">Clothing</a> 
-				<a href="booksPage.jsp">Books</a>
-				<a href="autoPage.jsp">Automotive</a> 
-				<a href="homePage.jsp">Home</a> 
-				<a href="viewAllPage.jsp">View All</a>
+				<nt:Categories category = "<%=dept%>" />
 			</div>
 		</div>
 
-		<a href="cartPage.jsp">Cart</a> <a href="inventoryPage.jsp">Inventory</a>
+		<a href="cartPage.jsp">Cart</a> <a href="inventory">Inventory</a>
 		<a href="loginPage.jsp" style="float: right">Sign In</a>
 
 		<!-- Search Bar -->

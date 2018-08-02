@@ -46,7 +46,7 @@ public class ProductDetailServlet extends HttpServlet {
 		request.setAttribute("itemDescription", itemDescription);
 		request.setAttribute("itemPrice", itemPrice);
 		request.setAttribute("itemID", itemID);
-		request.getRequestDispatcher("productDetailsPage.jsp").forward(request, response);
+		request.getRequestDispatcher("product.jsp").forward(request, response);
 	}
 
 }
