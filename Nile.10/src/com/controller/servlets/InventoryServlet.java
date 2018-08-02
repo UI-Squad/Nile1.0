@@ -6,12 +6,14 @@ package com.controller.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import com.controller.casts.ConnectorCast;
 import com.controller.fetcher.Connector;
 import com.controller.handler.InventoryHandler;
 
@@ -20,13 +22,15 @@ import application.model.Item;
 @WebServlet("/inventory")
 public class InventoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
 	private static final String LOWTOHIGH = "1";
 	private static final String HIGHTOLOW = "2";
+	private HttpSession session;
+	private Connector connector;
+	private ArrayList<Item> inventory;
        
     public InventoryServlet() {
         super();
-
+        inventory = new ArrayList<Item>();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response){  
@@ -38,8 +42,9 @@ public class InventoryServlet extends HttpServlet {
     }
     
     public void doProcess(HttpServletRequest request, HttpServletResponse response) {
-    	Connector connector = new Connector();
-    	ArrayList<Item> inventory = new ArrayList<Item>(); //arrayList for JSP page
+    	inventory.clear();
+    	session = request.getSession(true);
+    	setConnector(session);
     	try {
     		if(request.getParameter("dept") == null){ //inventory page
     			request.setAttribute("dept", "Inventory");
@@ -77,10 +82,19 @@ public class InventoryServlet extends HttpServlet {
     	}catch(Exception e) {
     		System.err.println(this.getClass().getName() + ":" + e.getMessage());
     	}finally {
-    		connector.closeConnection();
+    		//connector.closeConnection();
+    	}
+    }   
+   
+    private void setConnector(HttpSession session) {
+    	Connector oldConnector = new ConnectorCast().convert(session.getAttribute("connector"));
+    	if(session.isNew() &&  (connector == null || oldConnector == null || 
+    			oldConnector.isClosed() || connector.isClosed())) {
+    		System.out.println("NEW CONNECTION");
+    		connector = new Connector();
+    		session.setAttribute("connector", connector);
     	}
     }
-   
 }
 
 
