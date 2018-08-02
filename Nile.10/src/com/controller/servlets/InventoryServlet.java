@@ -4,10 +4,7 @@ package com.controller.servlets;
  * @author Shane Bogard
  */
 
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import com.controller.casts.ConnectorCast;
 import com.controller.fetcher.Connector;
 import com.controller.handler.InventoryHandler;
-
 import application.model.Item;
 
 @WebServlet("/inventory")
@@ -25,7 +21,7 @@ public class InventoryServlet extends HttpServlet {
 	private static final String LOWTOHIGH = "1";
 	private static final String HIGHTOLOW = "2";
 	private HttpSession session;
-	private Connector connector;
+	private Connector connector = null;
 	private ArrayList<Item> inventory;
        
     public InventoryServlet() {
@@ -87,12 +83,30 @@ public class InventoryServlet extends HttpServlet {
     }   
    
     private void setConnector(HttpSession session) {
-    	Connector oldConnector = new ConnectorCast().convert(session.getAttribute("connector"));
-    	if(session.isNew() &&  (connector == null || oldConnector == null || 
-    			oldConnector.isClosed() || connector.isClosed())) {
+    	if(session.isNew()) { //open new connection to database
+    		if(connector != null){ //close existing connections if session is new
+    			connector.closeConnection();
+    		}
+    		//open new connection
     		System.out.println("NEW CONNECTION");
-    		connector = new Connector();
+        	connector = new Connector();
     		session.setAttribute("connector", connector);
+    	}else { //use existing connection to database if session is not new
+    		Connector oldConnector = new ConnectorCast().convert(session.getAttribute("connector"));
+    		if(oldConnector != null) {
+    			if(oldConnector.isClosed()) { //check if existing connection was closed
+    				oldConnector.openConnection(); //reopen
+    			}
+    			System.out.println("CONNECTION CONFIRMED");
+    			connector = oldConnector;
+    		}else { //existing connection not found, reopen connection
+        		if(connector != null){ //close existing connections if session is new
+        			connector.closeConnection();
+        		}
+        		System.out.println("NEW CONNECTION");
+            	connector = new Connector();
+            	session.setAttribute("connector", connector);
+    		}
     	}
     }
 }
