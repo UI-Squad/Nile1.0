@@ -38,7 +38,7 @@ public class InventoryTag extends SimpleTagSupport{
 			out.println("<div class=\"grid-container\"><div class=\"item1\">");
 			
 			//ItemProductForm
-			out.println("<form name=\"itemNameForm"+i+"\" action=\"productDetailServlet\" method=\"POST\">");
+			out.println("<form name=\"itemNameForm"+i+"\" action=\"productdetails\" method=\"POST\">");
 			out.println("<input type=\"hidden\" name=\"itemName\" value=\""+itemName+"\">");
 			out.println("<input type=\"hidden\" name=\"itemDescription\" value=\""+itemDescription+"\">");
 			out.println("<input type=\"hidden\" name=\"itemPrice\" value=\""+itemPrice+"\">");
