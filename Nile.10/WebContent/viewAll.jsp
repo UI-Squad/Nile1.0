@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%  
+	Boolean logged = (Boolean)session.getAttribute("logged"); 
+	String signOn = "Sign In";
+	String signLink = "login.jsp";
+	if(logged != null && logged == true){ 
+		signOn = "Sign Out ";;
+		signLink = "user?page=logout";
+	}
+%>	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -219,8 +228,8 @@ navigation links stack on top of each other instead of next to each other */
 			</div>
 		</div>
 
-		<a href="cartPage.jsp">Cart</a> <a href="inventoryPage.jsp">Inventory</a>
-		<a href="login.jsp" style="float: right">Sign In</a>
+		<a href="user?page=cart">Cart</a> <a href="inventory">Inventory</a>
+		<a href="<%= signLink %>" style="float: right"><%= signOn %></a>
 
 		<!-- Search Bar -->
 		<div class="search-container">

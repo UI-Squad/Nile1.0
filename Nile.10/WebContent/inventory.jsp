@@ -5,6 +5,13 @@
 <% 
 	String dept = (String)request.getAttribute("dept"); 
 	ArrayList<Item> items = new ItemListCast().convertList(request.getAttribute("inventory")); 
+	Boolean logged = (Boolean)session.getAttribute("logged"); 
+	String signOn = "Sign In";
+	String signLink = "login.jsp";
+	if(logged != null && logged == true){ 
+		signOn = "Sign Out ";;
+		signLink = "user?page=logout";
+	}
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -311,7 +318,7 @@ navigation links stack on top of each other instead of next to each other */
 			 }
 		%>
 		
-		<a href="login.jsp" style="float: right">Sign In</a>
+		<a href="<%= signLink %>" style="float: right"><%= signOn %></a>
 
 		<!-- Search Bar -->
 			<div class="search-container">

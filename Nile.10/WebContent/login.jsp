@@ -90,7 +90,7 @@ span.psw {
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
-    <a href="Website.html"><button type="button" class="cancelbtn">Cancel</button></a>
+    <a href="Website.jsp"><button type="button" class="cancelbtn">Cancel</button></a>
     <span class="psw"><a href="registerPage.jsp">Sign Up</a></span>
   </div>
 </form>

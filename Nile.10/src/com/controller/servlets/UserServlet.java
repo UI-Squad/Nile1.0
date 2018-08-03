@@ -29,6 +29,8 @@ public class UserServlet extends HttpServlet {
 	private Customer user;
 	private Controller control;
 	private PrintWriter write;
+	private Boolean logged = false;
+	private Object obj = null;
 	
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{  
     	doProcess(request, response);
@@ -57,15 +59,21 @@ public class UserServlet extends HttpServlet {
     			}else { //login successful
     				System.out.println("LOGIN " + user.getId() + " CONFIRMED");
     				session.setAttribute("user", user);
+    				logged = true;
+    				session.setAttribute("logged", logged);
     				request.getRequestDispatcher("Website.jsp").forward(request, response);
     			}
     			break;
     		case "cart":	//cart page
     			setUser(session);
+    			obj = request.getAttribute("logged");
+    			logged = (obj != null) ? (Boolean)obj : false;
     			request.getRequestDispatcher("cart.jsp").forward(request, response);
     			break;
     		case "additem": //add item to cart
     			setUser(session);
+    			obj = request.getAttribute("logged");
+    			logged = (obj != null) ? (Boolean)obj : false;
     			String itemId = request.getParameter("itemID");
     			int qty = Integer.parseInt(request.getParameter("numberOfItem"));
     			Item item = control.inventoryHandle().getItemById(itemId);
@@ -82,6 +90,14 @@ public class UserServlet extends HttpServlet {
     				}
     			}
     			request.getRequestDispatcher("cart.jsp").forward(request, response);
+    			break;
+    		case "logout": //logout
+    			logged = false;
+    			session.setAttribute("logged", logged);
+    			connector.closeConnection();
+    			session.invalidate();
+    			System.out.println("USER " + user.getId() + " LOGGED OUT");
+    			response.sendRedirect("Website.jsp");
     			break;
     		default:
     			System.err.println("USER DISPATCHER ERROR");

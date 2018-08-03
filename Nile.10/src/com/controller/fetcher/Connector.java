@@ -44,7 +44,7 @@ public class Connector {
 			if(connect == null) {
 				System.out.println("OPENING CONNECTION...");
 				connect = DriverManager.getConnection("jdbc:mysql://45.17.26.63/ui_database?serverTimezone=UTC", USER, PASS);
-			}else if(connect != null && !connect.isValid(5)) {
+			}else if(connect != null && !connect.isValid(3)) {
 				connect.close();
 				connect = DriverManager.getConnection("jdbc:mysql://45.17.26.63/ui_database?serverTimezone=UTC", USER, PASS);
 			}

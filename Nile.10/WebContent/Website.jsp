@@ -1,8 +1,18 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%  
+	Boolean logged = (Boolean)session.getAttribute("logged"); 
+	String signOn = "Sign In";
+	String signLink = "login.jsp";
+	if(logged != null && logged == true){ 
+		signOn = "Sign Out ";;
+		signLink = "user?page=logout";
+	}
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta name="author" content="Erwin Herrera">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Nile Shopping Service</title>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -366,7 +376,7 @@ to {
 		</div>
 
 		<a href="user?page=cart">Cart</a> <a href="inventory">Inventory</a>
-		<a href="login.jsp" style="float: right">Sign In</a>
+		<a href="<%= signLink %>" style="float: right"><%= signOn %></a>
 
 		<!-- Search Bar -->
 		<div class="search-container">
