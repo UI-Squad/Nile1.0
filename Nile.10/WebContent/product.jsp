@@ -298,8 +298,8 @@ navigation links stack on top of each other instead of next to each other */
 			</div>
 		</div>
 
-		<a href="cartPage.jsp">Cart</a> <a href="inventory">Inventory</a>
-		<a href="loginPage.jsp" style="float: right">Sign In</a>
+		<a href="cart.jsp">Cart</a> <a href="inventory">Inventory</a>
+		<a href="login.jsp" style="float: right">Sign In</a>
 
 		<!-- Search Bar -->
 		<div class="search-container">
