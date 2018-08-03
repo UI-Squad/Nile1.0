@@ -282,7 +282,7 @@ navigation links stack on top of each other instead of next to each other */
 
 	<!-- Navigation bar on the top of the menu  -->
 	<div class="topnav">
-		<a href="Website.html">Home</a>
+		<a href="Website.jsp">Home</a>
 
 		<!-- Drop down sub menu for categories in navigation bar  -->
 		<!-- Drop down sub menu for categories in navigation bar  -->
@@ -296,7 +296,7 @@ navigation links stack on top of each other instead of next to each other */
 		</div>
 
 		<a href="user?page=cart" class="active">Cart</a> <a
-			href="inventory">Inventory</a> <a href="loginPage.jsp"
+			href="inventory">Inventory</a> <a href="login.jsp"
 			style="float: right">Sign In</a>
 
 		<!-- Search Bar -->

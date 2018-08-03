@@ -348,7 +348,7 @@ to {
 
 	<!-- Navigation bar on the top of the menu  -->
 	<div class="topnav">
-		<a href="Website.html" class="active">Home</a>
+		<a href="Website.jsp" class="active">Home</a>
 
 		<!-- Drop down sub menu for categories in navigation bar  -->
 		<div class="dropdown">
@@ -366,7 +366,7 @@ to {
 		</div>
 
 		<a href="user?page=cart">Cart</a> <a href="inventory">Inventory</a>
-		<a href="loginPage.jsp" style="float: right">Sign In</a>
+		<a href="login.jsp" style="float: right">Sign In</a>
 
 		<!-- Search Bar -->
 		<div class="search-container">
