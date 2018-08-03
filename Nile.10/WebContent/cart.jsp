@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="com.controller.handler.CartHandler"
-	import="application.model.Cart"%>
+	pageEncoding="UTF-8" import="application.model.Customer" 
+	import="com.controller.casts.CustomerCast"%>
 <%@ taglib prefix = "nt" uri = "WEB-INF/custom.tld"%>
+<%  
+	Customer user = new CustomerCast().convert(session.getAttribute("user"));
+	//Customer user = new Customer("Gues", "Guest");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -297,7 +301,7 @@ navigation links stack on top of each other instead of next to each other */
 
 		<!-- Search Bar -->
 		<div class="search-container">
-			<form name="searchBar" action="searchResponseServlet"
+			<form name="searchBar" action="inventory"
 				onsubmit="return validateForm()" method="POST">
 				<input type="text" name="value" placeholder="Search">
 				<button type="submit">
@@ -313,22 +317,13 @@ navigation links stack on top of each other instead of next to each other */
 		<div class="rightcolumn">
 			<div class="card">
 				<div id="w">
-				
-					<%
-							//CartHandler cartHandler = new CartHandler();
-							// This Is a User Cart:  Cart cart = cartHandler.getCart("car001");
-							//Cart cart = cartHandler.getById("car000");	
-							Cart cart = new Cart();
-					%>
 					<header id="title">
 					<h1>Shopping Cart</h1>
 					</header>
 					<% 
-					for (int k = 0; k < cart.getSize(); k++) {
-					
-					
+					for (int k = 0; k < user.getCart().getSize(); k++) {
 					out.println("<form name=\"removeItemForm"+k+"\" action=\"removeFromCartServlet\" method=\"POST\">");
-					out.println("<input type=\"hidden\" name=\"itemID\" value=\""+cart.getCartItems().get(k).getItemId()+"\">");
+					out.println("<input type=\"hidden\" name=\"itemID\" value=\""+ user.getCart().getCartItems().get(k).getItemId()+"\">");
 					out.println("</form>");
 					}
 					
@@ -351,27 +346,27 @@ navigation links stack on top of each other instead of next to each other */
 								<!-- JSP Scriplet that generates the contents -->
 
 								<%
-									for (int i = 0; i < cart.getSize(); i++) {
+									for (int i = 0; i < user.getCart().getSize(); i++) {
 
 										out.println("<tr class=\"productItem\">");
 
 										//Picture
 										out.println("<td><img src=\"./productImages/"
-										+ cart.getCartItems().get(i).getItemName() + ".jpg\" class=\"thumb\" " 
+										+ user.getCart().getCartItems().get(i).getItemName() + ".jpg\" class=\"thumb\" " 
 										+ "style=\"width: 140px\" alt=\"product\"></a></td>");
 										
 										// Quantity
-										out.println("<td><input type=\"number\" value=\"" + cart.getCartItems().get(i).getQuantity()
+										out.println("<td><input type=\"number\" value=\"" + user.getCart().getCartItems().get(i).getQuantity()
 												+ "\" min=\"0\" max=\"99\"class=\"qtyinput\"></td>");
 
 										//Name
 										out.println("<td>");
-										out.println(cart.getCartItems().get(i).getItemName());
+										out.println(user.getCart().getCartItems().get(i).getItemName());
 										out.println("</td>");
 
 										//Total Item Price
 										out.println("<td>");
-										out.println("$" + cart.getItemTotal(cart.getCartItems().get(i)));
+										out.println("$" + user.getCart().getItemTotal(user.getCart().getCartItems().get(i)));
 										out.println("</td>");
 
 										// Remove option 
@@ -395,7 +390,7 @@ navigation links stack on top of each other instead of next to each other */
 									<td colspan="2">&nbsp;</td>
 									<td colspan="2"><span class="thick"> 
 									<%
- 										out.println(cart.getCartTotal());
+ 										out.println(user.getCart().getCartTotal());
  									%>
 									</span></td>
 								</tr>
@@ -422,7 +417,7 @@ navigation links stack on top of each other instead of next to each other */
 
 	<div class="footer">
 		<h2>
-			<a href="contactUsPage.jsp"><font color="000000">Contact
+			<a href="contactUs.jsp"><font color="000000">Contact
 					Us</font></a>
 		</h2>
 	</div>

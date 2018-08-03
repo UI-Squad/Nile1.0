@@ -88,7 +88,7 @@ public class UserServlet extends HttpServlet {
     			user = new Customer(guestEmail, guestId);
     			session.setAttribute("user", user);
     		}
-    		System.out.println(user.toString());
+    		System.out.println("USERID:" + user.getId());
     	}
     }
 
