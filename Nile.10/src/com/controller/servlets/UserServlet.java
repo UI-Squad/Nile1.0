@@ -3,6 +3,8 @@ package com.controller.servlets;
  * @author Shane Bogard
  */
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +20,7 @@ import com.controller.fetcher.Connector;
 import application.model.Customer;
 import application.model.Item;
 
+
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -25,24 +28,44 @@ public class UserServlet extends HttpServlet {
 	private Connector connector;
 	private Customer user;
 	private Controller control;
+	private PrintWriter write;
 	
-    public void doGet(HttpServletRequest request, HttpServletResponse response){  
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{  
     	doProcess(request, response);
     }
     
-    public void doPost(HttpServletRequest request, HttpServletResponse response){ 
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{ 
     	doProcess(request, response);
     }
     
-    public void doProcess(HttpServletRequest request, HttpServletResponse response) {
+    public void doProcess(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	session = request.getSession(true);
     	setConnector(session);
-    	setUser(session);
     	control = new Controller(connector);
+    	String page = (String)request.getParameter("page");
     	try {
-    		if(request.getParameter("page").equals("cart")) { //cart page
+    		switch(page) {
+    		case "login":
+    			write = response.getWriter();
+    			user = control.customerHandle().getByEmail(request.getParameter("email"),
+    												request.getParameter("password"));
+    			if(user == null) { //login failed
+    				write.println("<script type=\"text/javascript\">");  
+    				write.println("alert('Invalid email/password. Please try again.');");  
+    				write.println("window.location.replace(\"login.jsp\");");
+    				write.println("</script>"); 
+    			}else { //login successful
+    				System.out.println("LOGIN " + user.getId() + " CONFIRMED");
+    				session.setAttribute("user", user);
+    				request.getRequestDispatcher("Website.jsp").forward(request, response);
+    			}
+    			break;
+    		case "cart":	//cart page
+    			setUser(session);
     			request.getRequestDispatcher("cart.jsp").forward(request, response);
-    		}else if(request.getParameter("page").equals("additem")) { //add item to cart
+    			break;
+    		case "additem": //add item to cart
+    			setUser(session);
     			String itemId = request.getParameter("itemID");
     			int qty = Integer.parseInt(request.getParameter("numberOfItem"));
     			Item item = control.inventoryHandle().getItemById(itemId);
@@ -56,9 +79,13 @@ public class UserServlet extends HttpServlet {
     	    			control.cartHandle().addItem(user.getCart().getCartId(), 
     	    					user.getId(), itemId, qty);
     	    			System.out.println("ITEM: " + item.getItemName() + " ADDED TO CART");
-    	    			request.getRequestDispatcher("cart.jsp").forward(request, response);
     				}
     			}
+    			request.getRequestDispatcher("cart.jsp").forward(request, response);
+    			break;
+    		default:
+    			System.err.println("USER DISPATCHER ERROR");
+    			break;
     		}
     	}catch(Exception e) {
     		System.err.println(this.getClass().getName() + ":" + e.getMessage());

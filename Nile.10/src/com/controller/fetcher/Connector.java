@@ -38,11 +38,17 @@ public class Connector {
 	 * @throws SQLException 
 	 */
 	public void openConnection(){
-		System.out.println("OPENING CONNECTION...");
 		try {
 			// This will load the MySQL driver, each DBMS has its own driver
 			Class.forName("com.mysql.jdbc.Driver");
-			connect = DriverManager.getConnection("jdbc:mysql://45.17.26.63/ui_database?serverTimezone=UTC", USER, PASS);
+			if(connect == null) {
+				System.out.println("OPENING CONNECTION...");
+				connect = DriverManager.getConnection("jdbc:mysql://45.17.26.63/ui_database?serverTimezone=UTC", USER, PASS);
+			}else if(connect != null && !connect.isValid(5)) {
+				connect.close();
+				connect = DriverManager.getConnection("jdbc:mysql://45.17.26.63/ui_database?serverTimezone=UTC", USER, PASS);
+			}
+			
 			System.out.println("CONNECTION SUCCESSFUL...");
 		} catch (Exception e) {
 			System.err.println(this.getClass().getName() + ":" + e.getMessage());
