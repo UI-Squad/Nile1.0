@@ -10,7 +10,7 @@ import application.model.Item;
 
 public class ItemListCast {
 
-	public ArrayList<Item> convert(Object obj){
+	public ArrayList<Item> convertList(Object obj){
 		ArrayList<Item> items = new ArrayList<Item>();
 		if(obj instanceof ArrayList<?>) {
 			ArrayList<?> list = (ArrayList<?>)obj;
@@ -22,4 +22,14 @@ public class ItemListCast {
 		}
 		return items;
 	}
+	
+	public Item convertItem(Object obj) {
+		Item item = null;
+		if(obj instanceof Item) {
+			item = (Item)obj;
+		}
+		return item;
+	}
+	
+	
 }

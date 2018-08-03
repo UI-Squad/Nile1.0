@@ -129,6 +129,17 @@ public class Customer {
 	 * 
 	 * @param email
 	 * @param cusId
+	 * @param cartId
+	 */
+	public Customer(String email, String cusId, String cartId) {
+		this(email, cusId, new Name(), new Address(), "", new Cart());
+		cart.setCartId(cartId);
+	}
+	
+	/**
+	 * 
+	 * @param email
+	 * @param cusId
 	 */
 	public Customer(String email, String cusId) {
 		this(email, cusId, new Name(), new Address(), "", new Cart());

@@ -78,12 +78,21 @@ public class Cart{
 		return new ArrayList<Item>(cart);
 	}
 	
+	
 	/**
 	 * Adds an item to this cart if the item does not already exist.
+	 * If the item exists, the quantity of the item is incremented by
+	 * the Item objects quantity
 	 * @param item An item object to add to this cart
 	 */
 	public void addToCart(Item item){
-		if(!(cart.contains(item))) cart.add(item);
+		if(!(cart.contains(item))) {
+			cart.add(item);
+		}else {
+			int index = cart.lastIndexOf(item);
+			int newQty = item.getQuantity() + cart.get(index).getQuantity();
+			cart.get(index).setQuantity(newQty);
+		}
 	}
 
 	/**

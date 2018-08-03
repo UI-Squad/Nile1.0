@@ -2,11 +2,16 @@
 	pageEncoding="UTF-8" import="application.model.Item" import="com.controller.handler.InventoryHandler"
 	import="java.util.ArrayList" import="java.util.Collections" import="com.controller.casts.ItemListCast"%>
 <%@ taglib prefix = "nt" uri = "WEB-INF/custom.tld"%>
-<% String dept = (String)request.getAttribute("dept"); %> 
+<% 
+	String dept = (String)request.getAttribute("dept"); 
+	ArrayList<Item> items = new ItemListCast().convertList(request.getAttribute("inventory")); 
+%> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <title>Nile Shopping Service: <%=dept%></title>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style type="text/css">
 * {
 	box-sizing: border-box;
@@ -321,7 +326,7 @@ navigation links stack on top of each other instead of next to each other */
 		</div>
 
 	<!-- Inventory page below nav bar -->
-	<% ArrayList<Item> items = new ItemListCast().convert(request.getAttribute("inventory")); %>
+	
 	<div class="row">	
 		<div class="rightcolumn">
 			<div class="card"> <!-- items card -->

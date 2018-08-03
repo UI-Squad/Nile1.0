@@ -13,6 +13,37 @@
 <link rel="stylesheet" href="./css/defaultStyle.css">
 
 <style type="text/css">
+* {
+	box-sizing: border-box;
+}
+
+a{
+	color: black;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+    color:blue;
+}
+
+a:active {
+    text-decoration: underline;
+}
+
+body {
+	font-family: Arial;
+	padding: 10px;
+	background: #f1f1f1;
+}
+
 .addToCartButton {
 	background-color: #333;
 	border: none;
@@ -28,6 +59,209 @@
 	background-color: #1e90ff; 
 }
 
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+	float: left;
+	width: 33.33%;
+	padding: 10px;
+	height: 425px; /* Should be removed. Only for demonstration */
+}
+
+/* Header/Blog Title */
+.header {
+	padding: 30px;
+	text-align: center;
+	background: white;
+}
+
+.header h1 {
+	font-size: 50px;
+}
+
+/* Style the top navigation bar */
+.topnav, .dropbtn {
+	overflow: hidden;
+	background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+	float: left;
+	display: block;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 17px;
+}
+
+/* Change color on hover */
+.topnav a:hover, .dropdown:hover {
+	background-color: #ddd;
+	color: black;
+}
+
+/* Style the "active" element to highlight the current page */
+.topnav a.active {
+	background-color: #4CAF50;
+	color: white;
+}
+
+/* Styling for the dropdown menu in the navigation bar  */
+.dropdown {
+	float: left;
+	overflow: hidden;
+}
+
+.dropdown .dropbtn {
+	font-size: 16px;
+	border: none;
+	outline: none;
+	color: white;
+	padding: 14px 16px;
+	background-color: inherit;
+	font-family: inherit;
+	margin: 0;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+.dropdown-content a {
+	float: none;
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+	text-align: left;
+}
+
+.dropdown-content a:hover {
+	background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+/* Styling for dropdown in nav bar ends here*/
+.topnav .search-container {
+	float: right;
+}
+
+/* Style the search box inside the navigation bar */
+.topnav input[type=text] {
+	padding: 6px;
+	border: none;
+	margin-top: 8px;
+	font-size: 16px;
+}
+
+.topnav .search-container button {
+	float: right;
+	padding: 6px 10px;
+	margin-top: 8px;
+	margin-right: 16px;
+	background: #ddd;
+	font-size: 18px;
+	border: none;
+	cursor: pointer;
+}
+
+.topnav .search-container button:hover {
+	background: #ccc;
+}
+
+/* Clear floats after the columns */
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {
+	position: -webkit-sticky;
+	position: sticky;
+	float: left;
+	width: 20%;
+	background-color: #f1f1f1;
+	padding-right: 20px;
+	top: 20px;
+}
+
+/* Right column */
+/* Right column */
+.rightcolumn {
+	float: right;
+	width: 100%;
+}
+
+/* Fake image */
+.fakeimg {
+	background-color: #aaa;
+	width: 100%;
+	padding: 20px;
+}
+
+/* Add a card effect for articles */
+.card {
+	background-color: white;
+	padding: 20px;
+	margin-top: 20px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+/* Footer */
+.footer {
+	padding: 20px;
+	text-align: center;
+	background: #ddd;
+	margin-top: 20px;
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the 
+two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 800px) {
+	.col-container {
+		width: 100%;
+		padding: 0;
+	}
+}
+
+/* Responsive layout - when the screen is less than 400px wide, make the 
+navigation links stack on top of each other instead of next to each other */
+@media screen and (max-width: 400px) {
+	.topnav .search-container {
+		float: none;
+	}
+	.topnav a, .topnav input[type=text], .topnav .search-container button {
+		float: none;
+		display: block;
+		text-align: left;
+		width: 100%;
+		margin: 0;
+		padding: 14px;
+	}
+	.topnav input[type=text] {
+		border: 1px solid #ccc;
+	}
 }
 </style>
 
@@ -107,7 +341,7 @@
 				<br>
 				<p>$${itemPrice}</p>
 				
-				<form name="itemForm" action="AddtoCartServlet" method="POST">
+				<form name="itemForm" action="user?page=additem" method="POST">
 				<select name="numberOfItem" style="width: 70px;">
 									<option value="1">1</option>
 									<option value="2">2</option>
