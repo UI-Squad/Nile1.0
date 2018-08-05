@@ -4,8 +4,6 @@ package com.tags;
  */
 
 import java.io.IOException;
-
-
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
@@ -35,7 +33,8 @@ public class CategoriesTag extends SimpleTagSupport{
 		String home = (!category.equals("Home")) ?
 				"<a href=\"inventory?dept=Home\">Home</a>" :
 				"<a href=\"inventory?dept=Home\" class = \"active\">Home</a>";
-		String viewAll = "<a href=\"viewAll.jsp\">View All</a>";
+		String viewAll = (!category.equals("viewAll"))  ? "<a href=\"viewAll.jsp\">View All</a>" :
+				"<a href=\"viewAllPage.jsp\" class=\"active\">View All</a>";
 		
 		out.println(electronics);
 		out.println(clothing);

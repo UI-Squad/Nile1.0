@@ -76,6 +76,15 @@ public class InventoryFetcher extends DataFetcher {
 		return fetchData();
 	}
 	
+	public ResultSet fetchByDeptSortedBy(String dept, String column, boolean descending) {
+		clearMaps();
+		stringMap.put(1, dept);
+		sql = "Select i.* FROM Inventory i WHERE i.dept = ? ORDER BY " + column
+				+ ((descending) ? " DESC" : " ASC");
+		return fetchData();
+	}
+
+	
 	/**
 	 * Returns a row from the Inventory table matching the specified item ID.
 	 * @param itemId String literal specifying the item Id

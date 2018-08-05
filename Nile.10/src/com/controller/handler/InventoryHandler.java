@@ -188,6 +188,12 @@ public class InventoryHandler extends DataHandler<InventoryFetcher>{
 		return items;
 	}
 	
+	public ArrayList<Item> getByDeptSortBy(String dept, String column, boolean descending){
+		results = fetcher.fetchByDeptSortedBy(dept, column, descending);
+		parseResults();
+		return items;
+	}
+	
 	/**
 	 * Performs a search for items in the Inventory database.
 	 * @param search String literal specifying the search parameters

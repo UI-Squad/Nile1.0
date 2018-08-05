@@ -75,9 +75,17 @@ public class Cart{
 	 * @return ArrayList of item objects
 	 */
 	public ArrayList<Item> getCartItems(){
-		return new ArrayList<Item>(cart);
+		return cart;
 	}
 	
+	public Item getItem(String itemId) {
+		return cart.get(cart.indexOf(new Item(itemId, "", 0)));		
+		
+	}
+	
+	public Item getItem(Item item) {
+		return cart.get(cart.indexOf(item));
+	}
 	
 	/**
 	 * Adds an item to this cart if the item does not already exist.
@@ -94,7 +102,12 @@ public class Cart{
 			cart.get(index).setQuantity(newQty);
 		}
 	}
-
+	
+	public void removeItem(String itemId) {
+		Item item = new Item(itemId, "", 0);
+		cart.remove(item);
+	}
+	
 	/**
 	 * removes all items from the shopping cart
 	 */

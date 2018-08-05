@@ -45,6 +45,8 @@ public class UserServlet extends HttpServlet {
     	setConnector(session);
     	control = new Controller(connector);
     	String page = (String)request.getParameter("page");
+    	String itemId = null;
+    	int qty = 0;
     	try {
     		switch(page) {
     		case "login":
@@ -57,25 +59,28 @@ public class UserServlet extends HttpServlet {
     				write.println("window.location.replace(\"login.jsp\");");
     				write.println("</script>"); 
     			}else { //login successful
+    				control.cartHandle().returnCart(user.getCart().getCartId());
     				System.out.println("LOGIN " + user.getId() + " CONFIRMED");
     				session.setAttribute("user", user);
     				logged = true;
     				session.setAttribute("logged", logged);
+    				session.setAttribute("cart", user.getCart());
     				request.getRequestDispatcher("Website.jsp").forward(request, response);
     			}
     			break;
     		case "cart":	//cart page
     			setUser(session);
-    			obj = request.getAttribute("logged");
-    			logged = (obj != null) ? (Boolean)obj : false;
+    			session.setAttribute("cart", user.getCart());
+    			//obj = request.getAttribute("logged");
+    			//logged = (obj != null) ? (Boolean)obj : false;
     			request.getRequestDispatcher("cart.jsp").forward(request, response);
     			break;
     		case "additem": //add item to cart
     			setUser(session);
-    			obj = request.getAttribute("logged");
-    			logged = (obj != null) ? (Boolean)obj : false;
-    			String itemId = request.getParameter("itemID");
-    			int qty = Integer.parseInt(request.getParameter("numberOfItem"));
+    			//obj = request.getAttribute("logged");
+    			//logged = (obj != null) ? (Boolean)obj : false;
+    			itemId = request.getParameter("itemID");
+    			qty = Integer.parseInt(request.getParameter("numberOfItem"));
     			Item item = control.inventoryHandle().getItemById(itemId);
     			if(item != null) { //null check
     				if(item.getQuantity() >= qty) { //quantity check
@@ -89,6 +94,23 @@ public class UserServlet extends HttpServlet {
     	    			System.out.println("ITEM: " + item.getItemName() + " ADDED TO CART");
     				}
     			}
+    			session.setAttribute("cart", user.getCart());
+    			request.getRequestDispatcher("cart.jsp").forward(request, response);
+    			break;
+    		case "removeitem":
+    			setUser(session);
+    			//get itemId and Quantity
+    			itemId = request.getParameter("itemID");
+    			System.out.println("REMOVING: " + itemId);
+    			qty = user.getCart().getItem(itemId).getQuantity();
+    			System.out.println("QUANTITY: " + qty);
+    			//remove from cart and add back into inventory
+    			control.cartHandle().removeItem(user.getCart().getCartId(), itemId);
+    			user.getCart().removeItem(itemId);
+    			control.inventoryHandle().addQuantity(itemId, qty);
+    			//forward back to cart page
+    			System.out.println("ITEM: " + itemId + " REMOVE FROM CART");
+    			session.setAttribute("cart", user.getCart());
     			request.getRequestDispatcher("cart.jsp").forward(request, response);
     			break;
     		case "logout": //logout
@@ -97,6 +119,7 @@ public class UserServlet extends HttpServlet {
     			connector.closeConnection();
     			session.invalidate();
     			System.out.println("USER " + user.getId() + " LOGGED OUT");
+    			session.setAttribute("cart", null);
     			response.sendRedirect("Website.jsp");
     			break;
     		default:
@@ -106,8 +129,6 @@ public class UserServlet extends HttpServlet {
     	}catch(Exception e) {
     		System.err.println(this.getClass().getName() + ":" + e.getMessage());
     	}
-    		
-    	
     }
     
     private void setConnector(HttpSession session) {

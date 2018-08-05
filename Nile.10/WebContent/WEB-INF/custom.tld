@@ -37,4 +37,14 @@
           <rtexprvalue>true</rtexprvalue>
         </attribute>
    </tag>
+   <tag>
+       <name>Load</name>
+        <tag-class>com.tags.LoadTag</tag-class>
+        <body-content>empty</body-content>
+          <attribute>
+		<name>main</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+	   </attribute>	
+   </tag>
 </taglib>

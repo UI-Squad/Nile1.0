@@ -2,16 +2,12 @@
 	pageEncoding="UTF-8" import="application.model.Customer" 
 	import="com.controller.casts.CustomerCast"%>
 <%@ taglib prefix = "nt" uri = "WEB-INF/custom.tld"%>
-<%  
-	Customer user = new CustomerCast().convert(session.getAttribute("user"));
-	Boolean logged = (Boolean)session.getAttribute("logged"); 
-	String signOn = "Sign In";
-	String signLink = "login.jsp";
-	if(logged != null && logged == true){ 
-		signOn = "Sign Out ";;
-		signLink = "user?page=logout";
-	}
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<% Customer user = new CustomerCast().convert(session.getAttribute("user")); %>
+<nt:Load main="false"/>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -302,7 +298,7 @@ navigation links stack on top of each other instead of next to each other */
 		</div>
 
 		<a href="user?page=cart">Cart</a> <a href="inventory">Inventory</a>
-		<a href="<%= signLink %>" style="float: right"><%= signOn %></a>
+		<a href="${sessionScope.signLink}" style="float: right">${sessionScope.signOn}</a>
 
 		<!-- Search Bar -->
 		<div class="search-container">
@@ -325,89 +321,7 @@ navigation links stack on top of each other instead of next to each other */
 					<header id="title">
 					<h1>Shopping Cart</h1>
 					</header>
-					<% 
-					for (int k = 0; k < user.getCart().getSize(); k++) {
-					out.println("<form name=\"removeItemForm"+k+"\" action=\"removeFromCartServlet\" method=\"POST\">");
-					out.println("<input type=\"hidden\" name=\"itemID\" value=\""+ user.getCart().getCartItems().get(k).getItemId()+"\">");
-					out.println("</form>");
-					}
-					
-					%>
-					
-					<div id="page">
-						<table id="cart">
-							<thead>
-								<tr>
-									<th class="first"></th>
-									<th class="second">Qty</th>
-									<th class="third">Product</th>
-									<th class="fourth">Total</th>
-									<th class="fifth">&nbsp;</th>
-								</tr>
-							</thead>
-							<tbody>
-								<!-- shopping cart contents -->
-
-								<!-- JSP Scriplet that generates the contents -->
-
-								<%
-									for (int i = 0; i < user.getCart().getSize(); i++) {
-
-										out.println("<tr class=\"productItem\">");
-
-										//Picture
-										out.println("<td><img src=\"./productImages/"
-										+ user.getCart().getCartItems().get(i).getItemName() + ".jpg\" class=\"thumb\" " 
-										+ "style=\"width: 140px\" alt=\"product\"></a></td>");
-										
-										// Quantity
-										out.println("<td><input type=\"number\" value=\"" + user.getCart().getCartItems().get(i).getQuantity()
-												+ "\" min=\"0\" max=\"99\"class=\"qtyinput\"></td>");
-
-										//Name
-										out.println("<td>");
-										out.println(user.getCart().getCartItems().get(i).getItemName());
-										out.println("</td>");
-
-										//Total Item Price
-										out.println("<td>");
-										out.println("$" + user.getCart().getItemTotal(user.getCart().getCartItems().get(i)));
-										out.println("</td>");
-
-										// Remove option 
-										out.println("<td>");
-										out.println("<span class=\"remove\" onclick=\"document.removeItemForm"+i+".submit()\"><img src=\"Images/trash.png\" alt=\"X\"></span>");
-										out.println("</td>");
-										out.println("</tr>");
-									}
-								%>
-								
-
-								<!-- tax + subtotal -->
-								<tr class="extracosts">
-									<td class="light">Shipping:</td>
-									<td colspan="2" class="light"></td>
-									<td>Free</td>
-									<td>&nbsp;</td>
-								</tr>
-								<tr class="totalprice">
-									<td class="light">Total:</td>
-									<td colspan="2">&nbsp;</td>
-									<td colspan="2"><span class="thick"> 
-									<%
- 										out.println(user.getCart().getCartTotal());
- 									%>
-									</span></td>
-								</tr>
-								<!-- checkout btn -->
-								<tr class="checkoutrow">
-								<td colspan="5" class="checkout"><a href="personalCusInfoPage.jsp">
-								<button id="submitbtn">Checkout</button></a>
-								</td>								
-								</tr>
-							</tbody>
-						</table>
-					</div>
+					<nt:Cart cart="${sessionScope.cart}"/>
 					
 				</div>
 				<!-- end divider for shopping cart  -->

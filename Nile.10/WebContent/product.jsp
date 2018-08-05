@@ -2,16 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ taglib prefix = "nt" uri = "WEB-INF/custom.tld"%>
-<% 
-	String dept = (String)request.getAttribute("dept"); 
-	Boolean logged = (Boolean)session.getAttribute("logged"); 
-	String signOn = "Sign In";
-	String signLink = "login.jsp";
-	if(logged != null && logged == true){ 
-		signOn = "Sign Out ";;
-		signLink = "user?page=logout";
-	}
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<nt:Load main="false"/>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -303,12 +298,12 @@ navigation links stack on top of each other instead of next to each other */
 				Categories <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<nt:Categories category = "<%=dept%>" />
+				<nt:Categories category = "${requestScope.dept}" />
 			</div>
 		</div>
 
 		<a href="user?page=cart">Cart</a> <a href="inventory">Inventory</a>
-		<a href="<%= signLink %> style="float: right"><%= signOn %></a>
+		<a href="${sessionScope.signLink}" style="float: right">${sessionScope.signOn}</a>
 
 		<!-- Search Bar -->
 		<div class="search-container">

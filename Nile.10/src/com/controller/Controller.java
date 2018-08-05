@@ -6,8 +6,6 @@ import com.controller.handler.CustomerHandler;
 import com.controller.handler.InventoryHandler;
 import com.controller.handler.OrderHandler;
 
-import application.model.Customer;
-
 public class Controller {
 	
 	private CartHandler cartHandler;

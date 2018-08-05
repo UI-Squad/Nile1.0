@@ -1,14 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%  
-	Boolean logged = (Boolean)session.getAttribute("logged"); 
-	String signOn = "Sign In";
-	String signLink = "login.jsp";
-	if(logged != null && logged == true){ 
-		signOn = "Sign Out ";;
-		signLink = "user?page=logout";
-	}
-%>
+<%@ taglib prefix = "nt" uri = "WEB-INF/custom.tld"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<nt:Load main="true"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -376,7 +372,7 @@ to {
 		</div>
 
 		<a href="user?page=cart">Cart</a> <a href="inventory">Inventory</a>
-		<a href="<%= signLink %>" style="float: right"><%= signOn %></a>
+		<a href="${sessionScope.signLink}" style="float: right">${sessionScope.signOn}</a>
 
 		<!-- Search Bar -->
 		<div class="search-container">
