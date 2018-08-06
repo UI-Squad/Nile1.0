@@ -24,16 +24,16 @@ public class InventoryServlet extends HttpServlet {
 	private HttpSession session;
 	private Connector connector = null;
 	private InventoryHandler iHandle;
-	private ItemListCast itemCast;
 	private ArrayList<Item> inventory;
 	private String dept;
 	private String search;
+	private String searchLink;
 	private String sort;
+	private String searchText;
        
     public InventoryServlet() {
         super();
         inventory = new ArrayList<Item>();
-        itemCast = new ItemListCast();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response){  
@@ -44,111 +44,111 @@ public class InventoryServlet extends HttpServlet {
     	doProcess(request, response);
     }
     
-    public void doProcess(HttpServletRequest request, HttpServletResponse response) {
-    	session = request.getSession(true);
-    	setConnector(session);
-      	iHandle = new InventoryHandler(connector);
-    	dept = (String)request.getParameter("dept");
-    	search = (String)request.getParameter("value");
-    	sort = ((String)request.getParameter("sort") != null) 
-    				? (String)request.getParameter("sort") :
-    				"";	
-    	try {
-    		switch(sort) { //sorting
+    private void doProcess(HttpServletRequest request, HttpServletResponse response) {	
+    	setVariables(request, response);
+    	//build search link
+    	buildSearchLink();
+    	//process request
+    	processRequest();
+    	
+    		/*switch(sort) { //sorting
     			case LOWTOHIGH: //sort low to high
-    				if(dept != null) {
-    					inventory = new InventoryHandler(connector).getByDeptSortBy(dept.toLowerCase(), "price", false);
-    				}else {
-    					inventory = new InventoryHandler(connector).getAllSortBy("price", false);
-    					dept = "Inventory";
+    				if(dept != null) { //by dept
+    					if(!search.equals("Search")) { //search by
+    						inventory = iHandle.searchByDeptAndSort(dept, search, "price", false);
+    					}else { //no search
+    						inventory = iHandle.getByDeptSortBy(dept.toLowerCase(), "price", false);
+    					}			
+    				}else {  //by all items
+    					if(!search.equals("Search")){ //search by
+    						inventory = iHandle.searchAndSort(search, "price", false);
+    					}else { //no search
+    						inventory = iHandle.getAllSortBy("price", false);
+        					dept = "Inventory";
+    					}
     				}
     				break;
     			case HIGHTOLOW: //sort high to low 
-    				if(dept != null) {
-    					inventory = new InventoryHandler(connector).getByDeptSortBy(dept.toLowerCase(), "price", true);
-    				}else {
-    					inventory = new InventoryHandler(connector).getAllSortBy("price", true);
-    					dept = "Inventory";
+    				if(dept != null) {  //by dept
+    					if(!search.equals("Search")){ //search by
+    						inventory = iHandle.searchByDeptAndSort(dept, search, "price", true);
+    					}else {//no search
+    						inventory = iHandle.getByDeptSortBy(dept.toLowerCase(), "price", true);
+    					}	
+    				}else {  //by all items
+    					if(!search.equals("Search")){ //search by
+    						inventory = iHandle.searchAndSort(search, "price", true);
+    					}else { //no search
+    						inventory = iHandle.getAllSortBy("price", true);
+        					dept = "Inventory";
+    					}
     				}
     				break;
     			default: //no sorting
-    				if(dept != null) {
-    					inventory = new InventoryHandler(connector).getByDept(dept.toLowerCase());
-    				}else {
-    					inventory = new InventoryHandler(connector).getAll();
-    					dept = "Inventory";
+    				if(dept != null) {  //by dept
+    					if(!search.equals("Search")) { //search by
+    						inventory = iHandle.searchByDept(dept, search);
+    					}else { //no search
+    						inventory = iHandle.getAll();
+        					dept = "Inventory";
+    					}
+    					inventory = iHandle.getByDept(dept.toLowerCase());
+    				}else {  //by all items
+    					if(!search.equals("Search")) {
+    						inventory = iHandle.search(search);
+    					}else { //no search
+    						inventory = iHandle.getAll();
+        					dept = "Inventory";
+    					}
     				}
     				break;
+    		} //end processing
+*/    		
+    	try { //set attributes
+    		if(sort.equals(LOWTOHIGH)) {
+    			request.setAttribute("sortLow", "<mark>Price: Low to High</mark>");
+    			request.setAttribute("sortHigh", "Price: High to Low");
     		}
-     		
-    		/**if(request.getParameter("dept") == null){ //inventory page
-    			request.setAttribute("dept", "Inventory");
-            	String sort = ((String)request.getParameter("sort") != null) 
-            			? (String)request.getParameter("sort") :
-            				""; //sorting value
-            	String search = (String)request.getParameter("value");
-            	//sorting and searching
-            	switch(sort) {
-            		case LOWTOHIGH:
-            			if(search != null) {
-            				inventory = new InventoryHandler(connector).searchAndSort(search, "price", false);
-            			}else {
-            				inventory = new InventoryHandler(connector).getAllSortBy("price", false);
-            			}
-            			break;
-            		case HIGHTOLOW:
-                		if(search != null) {
-                			inventory = new InventoryHandler(connector).searchAndSort(search, "price", true);
-                		}else {
-                			inventory = new InventoryHandler(connector).getAllSortBy("price", true);
-                		}	
-            			break;
-            		default:
-                		if(search != null) {
-                			inventory = new InventoryHandler(connector).search(search);
-                		}else {
-                			inventory = new InventoryHandler(connector).getAll();
-                		}	
-            	}
-    		}else { //by dept
-    			
+    		else if(sort.equals(HIGHTOLOW)) {
+    			request.setAttribute("sortLow", "Price: Low to High");
+    			request.setAttribute("sortHigh", "<mark>Price: High to Low</mark>");
+    		}else {
+    			request.setAttribute("sortLow", "Price: Low to High");
+    			request.setAttribute("sortHigh", "Price: High to Low");
     		}
-            
-            	/**if(sort.equals(LOWTOHIGH)) {
-            		if(search != null) {
-            			inventory = new InventoryHandler(connector).searchAndSort(search, "price", false);
-            		}else{
-            			inventory = new InventoryHandler(connector).getAllSortBy("price", false);
-            		}
-            	}else if(sort.equals(HIGHTOLOW)) {
-            		if(search != null) {
-            			inventory = new InventoryHandler(connector).searchAndSort(search, "price", true);
-            		}else {
-            			inventory = new InventoryHandler(connector).getAllSortBy("price", true);
-            		}		
-            	}else {
-            		if(search != null) {
-            			inventory = new InventoryHandler(connector).search(search);
-            		}else {
-            			inventory = new InventoryHandler(connector).getAll();
-            		}	
-            	}*/
-    		/**}else { //categories page
-    			String dept = (String)request.getParameter("dept");
-    			request.setAttribute("dept", request.getParameter("dept"));
-    			inventory = new InventoryHandler(connector).getByDept(dept.toLowerCase());
-    		}*/
+    		request.setAttribute("searchText", searchText);
     		request.setAttribute("dept", dept);
         	request.setAttribute("inventory", inventory);
-         	session.setAttribute("searchValue", search);
-        	request.getRequestDispatcher("inventory.jsp").forward(request, response);
+         	request.setAttribute("search", search);
+         	request.setAttribute("searchLink", searchLink);
+         	request.getRequestDispatcher("inventory.jsp").forward(request, response);
     	}catch(Exception e) {
     		System.err.println(this.getClass().getName() + ":" + e.getMessage());
     	}finally {
-    		//connector.closeConnection();
+    		
     	}
     }   
-   
+    
+    private void setVariables(HttpServletRequest request, HttpServletResponse response) {
+    	session = request.getSession(true); //get session
+    	setConnector(session); //locate connection
+      	iHandle = new InventoryHandler(connector); //create database handler
+    	dept = (String)request.getParameter("dept"); //locate department for items lookup
+    	if(dept == null) dept = "Inventory";
+    	searchText = (String)request.getParameter("value"); //determine search parameters
+    	if (searchText != null) {
+    		search = searchText;
+    	}
+    	else {
+    		search = "";
+    		searchText = "Search";
+    	}
+    	System.out.println("SEARCHTEXT: " + searchText + " "); 
+    	System.out.println("SEARCH: " + search + " "); 
+    	sort = ((String)request.getParameter("sort") != null)  //determine sort parameters
+    				? (String)request.getParameter("sort") : "";
+    }
+       
     private void setConnector(HttpSession session) {
     	if(session.isNew()) { //open new connection to database
     		if(connector != null){ //close existing connections if session is new
@@ -173,6 +173,61 @@ public class InventoryServlet extends HttpServlet {
         		System.out.println("NEW CONNECTION");
             	connector = new Connector();
             	session.setAttribute("connector", connector);
+    		}
+    	}
+    }
+    
+    private void buildSearchLink() {
+    	if(dept != null && !sort.equals("")) { //search by dept and sort
+    		searchLink = "inventory?dept=" + dept +"?sort=" + sort;
+    	}else if(dept == null && !sort.equals("")){ //search and sort
+    		searchLink = "inventory?sort=" + sort;
+    	}else if(dept != null && sort.equals("")){ //search by dept
+    		searchLink = "inventory?dept=" + dept;
+    	}else { //search by all items no sort
+    		searchLink = "inventory"; 
+    	}
+    	System.out.println("Search Destination:" + searchLink);
+    }
+    
+    private void processRequest() {
+    	boolean bool_search = (!search.equals(""));
+    	boolean bool_sort = (sort.equals(HIGHTOLOW) || sort.equals(LOWTOHIGH));
+    	boolean bool_dept = !dept.equalsIgnoreCase("Inventory");
+    	boolean desc = sort.equals(HIGHTOLOW);
+    	System.out.println(bool_search);
+    	System.out.println(bool_sort);
+    	System.out.println(bool_dept);
+    	System.out.println(search);
+    	
+    	if(!bool_dept) { //Inventory Page
+    		if(!bool_sort) { //no sort on all inventory
+    			if(!bool_search) { //no search on non sorted inventory
+    				inventory = iHandle.getAll();
+    				System.out.println(inventory.toString());
+    			}else {  //search on non sorted inventory
+    				inventory = iHandle.search(search);
+    			}
+    		} else { //sort on all inventory
+    			if(!bool_search) { //no search on sorted inventory
+    				inventory = iHandle.getAllSortBy("price", desc);
+    			}else {  //search on sorted inventory
+    				inventory = iHandle.searchAndSort(search, "price", desc);
+    			}
+    		}
+    	}else { //Department page
+    		if(!bool_sort) { //no sort on department
+    			if(!bool_search) { //no search on non sorted department
+    				inventory = iHandle.getByDept(dept);
+    			}else {  //search on non sorted department
+    				inventory = iHandle.searchByDept(dept, search);
+    			}
+    		} else { //sort on department
+    			if(!bool_search) { //no search on sorted department
+    				inventory = iHandle.getByDeptSortBy(dept, "price", desc);
+    			}else {  //search on sorted department
+    				inventory = iHandle.searchByDeptAndSort(dept, search, "price", desc);
+    			}
     		}
     	}
     }

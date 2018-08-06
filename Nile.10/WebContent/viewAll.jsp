@@ -239,7 +239,7 @@ navigation links stack on top of each other instead of next to each other */
 	<div class="row">
 		<div class="column" style="background-color: #aaa;">
 			<h2>Electronics</h2>
-			<a href="inventory?dept=electronics">
+			<a href="inventory?dept=Electronics">
 				<center>
 					<img src="./Images/electronics.jpeg" style="width: 70%" alt="">
 				</center>
@@ -248,7 +248,7 @@ navigation links stack on top of each other instead of next to each other */
 		</div>
 		<div class="column" style="background-color: #bbb;">
 			<h2>Clothing</h2>
-			<a href="inventory?dept=clothing">
+			<a href="inventory?dept=Clothing">
 				<center>
 					<img src="./Images/clothing.jpeg" style="width: 70%" alt="">
 				</center>
@@ -257,7 +257,7 @@ navigation links stack on top of each other instead of next to each other */
 		</div>
 		<div class="column" style="background-color: #ccc;">
 			<h2>Books</h2>
-			<a href="inventory?dept=books">
+			<a href="inventory?dept=Books">
 				<center>
 					<img src="./Images/books.jpeg" style="width: 70%" alt="">
 				</center>
@@ -266,7 +266,7 @@ navigation links stack on top of each other instead of next to each other */
 		</div>
 		<div class="column" style="background-color: #ddd;">
 			<h2>Automotive</h2>
-			<a href="inventory?dept=auto">
+			<a href="inventory?dept=Auto">
 				<center>
 					<img src="./Images/automotive.jpeg" style="width: 70%" alt="">
 				</center>
@@ -275,7 +275,7 @@ navigation links stack on top of each other instead of next to each other */
 		</div>
 		<div class="column" style="background-color: #eee;">
 			<h2>Home</h2>
-			<a href="inventory?dept=home">
+			<a href="inventory?dept=Home">
 				<center>
 					<img src="./Images/home.jpeg" style="width: 70%" alt=""
 						onclick="Website.jsp">

@@ -29,13 +29,24 @@ public class LoadTag extends SimpleTagSupport{
 		String sortTwo = "inventory?sort=2";
 		String signOn = "Sign In";
 		String signLink = "login.jsp";
+		String search = (String)getJspContext().getAttribute("search", PageContext.REQUEST_SCOPE);
+		if(search == null) search = "Search";
 		String invLink = (dept.equals("Inventory")) ? 
 				"<a href=\"inventory\" class=\"active\">Inventory</a>" :
 				"<a href=\"inventory\">Inventory</a>";
-		
-					
+		String searchLink = (String)getJspContext().getAttribute("searchLink", PageContext.REQUEST_SCOPE);
+		if(searchLink == null) searchLink = "inventory";
 		Boolean logged = (Boolean)getJspContext().getAttribute("logged", PageContext.SESSION_SCOPE);
 		if(logged == null) logged = false;
+		String sortLow = (String)getJspContext().getAttribute("sortLow", PageContext.REQUEST_SCOPE);
+		if(sortLow == null) sortLow = "Price: Low to High";
+		String sortHigh = (String)getJspContext().getAttribute("sortHigh", PageContext.REQUEST_SCOPE);
+		if(sortHigh == null) sortHigh = "Price: High to Low";
+		String searchText = (String)getJspContext().getAttribute("searchText", PageContext.REQUEST_SCOPE);
+		System.out.println(search);
+		System.out.println(searchLink);
+		
+		
 		if(main.booleanValue() == false) {
 			if(!dept.equalsIgnoreCase("Inventory")){
 				sortOne = "inventory?sort=1&dept=" + dept; 
@@ -57,14 +68,20 @@ public class LoadTag extends SimpleTagSupport{
 		
 		try {
 			System.out.println("LOADING OBJECTS...");
+			//request scope
+			getJspContext().setAttribute("sortLow", sortLow, PageContext.REQUEST_SCOPE);
+			getJspContext().setAttribute("sortHigh", sortHigh, PageContext.REQUEST_SCOPE);
+			getJspContext().setAttribute("searchLink", PageContext.REQUEST_SCOPE);
+			getJspContext().setAttribute("search", search, PageContext.REQUEST_SCOPE);
+			getJspContext().setAttribute("searchText", searchText, PageContext.REQUEST_SCOPE);
 			getJspContext().setAttribute("dept", dept, PageContext.REQUEST_SCOPE);
 			getJspContext().setAttribute("invLink", invLink, PageContext.REQUEST_SCOPE);
+			getJspContext().setAttribute("sortOne", sortOne, PageContext.REQUEST_SCOPE);
+			getJspContext().setAttribute("sortTwo", sortTwo, PageContext.REQUEST_SCOPE);
+			//session scope
 			getJspContext().setAttribute("logged", logged, PageContext.SESSION_SCOPE);
 			getJspContext().setAttribute("signOn", signOn, PageContext.SESSION_SCOPE);
 			getJspContext().setAttribute("signLink", signLink, PageContext.SESSION_SCOPE);
-			getJspContext().setAttribute("sortOne", sortOne, PageContext.REQUEST_SCOPE);
-			getJspContext().setAttribute("sortTwo", sortTwo, PageContext.REQUEST_SCOPE);
-			//getJspBody().invoke(null);
 		} catch(Exception e) {
 			System.err.println(this.getClass().getName() + ":" + e.getMessage());
 		}

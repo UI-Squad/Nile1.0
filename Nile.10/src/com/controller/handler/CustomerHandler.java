@@ -9,6 +9,7 @@ import com.controller.handler.CartHandler;
 import com.controller.fetcher.Connector;
 import com.controller.fetcher.CustomerFetcher;
 import application.model.Address;
+import application.model.Cart;
 import application.model.Customer;
 import application.model.Name;
 
@@ -191,6 +192,34 @@ public class CustomerHandler extends DataHandler<CustomerFetcher> {
 		customer = null;
 		try {
 			while(results.next()) {
+				Cart cart;
+				String email = results.getString("email");
+				if(email == null) email = "";
+				String customerId = results.getString("customerId");
+				if(customerId == null) customerId = "";
+				String firstNm = results.getString("firstNm");
+				if(firstNm == null) firstNm = "";
+				String middleNm = results.getString("middleNm");
+				if(middleNm == null) email = "";
+				String lastNm = results.getString("lastNm");
+				if(lastNm == null) lastNm = "";
+				String address = results.getString("address");
+				if(address == null) address = "";
+				String phoneNm = results.getString("phoneNum");
+				if(phoneNm == null) phoneNm = "";
+				String cartId = results.getString("curCart");
+				if(cartId != null) {
+					cart = new CartHandler(fetcher.connector).getById(cartId);
+					if(cart == null) cart = new Cart(cartId);
+				}else {
+					cart = new Cart();
+				}
+				customer = new Customer(email, customerId, new Name(firstNm, middleNm, lastNm), 
+										new Address("address"), cart);
+				
+				/**Cart cart = new CartHandler(fetcher.connector).getById(results.getString("curCart"));
+				if(cart == null) cart = new Cart();
+				cart.setCartId(results.getString("curCart"));
 				customer = new Customer(results.getString("email"), 
 					results.getString("customerId"), 
 					new Name(results.getString("firstNm"), 
@@ -198,7 +227,8 @@ public class CustomerHandler extends DataHandler<CustomerFetcher> {
 							results.getString("lastNm")), 
 					new Address((results.getString("address") != null) ? results.getString("address") : ""),
 					results.getString("phoneNum"), 
-					new CartHandler(fetcher.connector).getById(results.getString("curCart")));
+					cart);
+					*/
 			}
 		} catch(SQLException e) {
 			System.err.println(this.getClass().getName() + ":" + e.getMessage());

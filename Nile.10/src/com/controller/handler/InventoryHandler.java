@@ -3,6 +3,7 @@ package com.controller.handler;
  * @author Shane Bogard
  */
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import com.controller.fetcher.Connector;
@@ -214,6 +215,18 @@ public class InventoryHandler extends DataHandler<InventoryFetcher>{
 	 */
 	public ArrayList<Item> searchAndSort(String search, String column, boolean descending){
 		results = fetcher.searchAndSort(search, column, descending);
+		parseResults();
+		return items;
+	}
+	
+	public ArrayList<Item> searchByDept(String dept, String search){
+		results = fetcher.searchByDept(dept, search);
+		parseResults();
+		return items;
+	}
+	
+	public ArrayList<Item> searchByDeptAndSort(String dept, String search, String column, boolean descending) {
+		results = fetcher.searchByDeptAndSort(dept, search, column, descending);
 		parseResults();
 		return items;
 	}

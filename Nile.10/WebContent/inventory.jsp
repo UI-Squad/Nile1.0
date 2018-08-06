@@ -11,9 +11,15 @@
 <html>
 <head>
 <title>Nile Shopping Service: ${dept}</title>
+
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style type="text/css">
+mark { 
+    background-color: #4CAF50;
+    color: white;
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -308,9 +314,9 @@ navigation links stack on top of each other instead of next to each other */
 
 		<!-- Search Bar -->
 			<div class="search-container">
-				<form name="searchBar" action="inventory"
+				<form name="searchBar" action="${requestScope.searchLink}"
 					onsubmit="return validateForm()" method="POST">
-					<input type="text" name="value" placeholder="Search">
+					<input type="text" name="value" placeholder="${requestScope.searchText}">
 					<button type="submit">
 						<i class="fa fa-search"></i>
 					</button>
@@ -332,9 +338,9 @@ navigation links stack on top of each other instead of next to each other */
 		<div class="leftcolumn">
 			<div class="card">
 				<h3>Filter/Sort</h3>
-				<a href="${requestScope.sortOne}">Price: Low to High</a>
+				<a href="${requestScope.sortOne}">${requestScope.sortLow}</a>
 				<p></p>
-				<a href="${requestScope.sortTwo}">Price: High to Low</a>
+				<a href="${requestScope.sortTwo}">${requestScope.sortHigh}</a>
 			</div>
 		</div> <!-- end left column diver -->
 	</div> <!-- end row div -->

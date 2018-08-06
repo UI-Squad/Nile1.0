@@ -362,12 +362,7 @@ to {
 				Categories <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<a href="inventory?dept=Electronics">Electronics</a> 
-				<a href="inventory?dept=Clothing">Clothing</a> 
-				<a href="inventory?dept=Books">Books</a>
-				<a href="inventory?dept=Auto">Automotive</a> 
-				<a href="inventory?dept=Home">Home</a> 
-				<a href="viewAll.jsp">View All</a>
+				<nt:Categories category=""/>
 			</div>
 		</div>
 
@@ -375,16 +370,16 @@ to {
 		<a href="${sessionScope.signLink}" style="float: right">${sessionScope.signOn}</a>
 
 		<!-- Search Bar -->
-		<div class="search-container">
-			<form name="searchBar" action="inventory"
-				onsubmit="return validateForm()" method="POST">
-				<input type="text" name="value" placeholder="Search">
-				<button type="submit">
-					<i class="fa fa-search"></i>
-				</button>
-			</form>
+			<div class="search-container">
+				<form name="searchBar" action="inventory"
+					onsubmit="return validateForm()" method="POST">
+					<input type="text" name="value" placeholder="Search">
+					<button type="submit">
+						<i class="fa fa-search"></i>
+					</button>
+				</form>
+			</div>
 		</div>
-	</div>
 
 	<!-- Featured Items Slideshow  -->
 	<div class="row">
