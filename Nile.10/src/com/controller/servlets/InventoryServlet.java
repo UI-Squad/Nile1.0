@@ -46,64 +46,10 @@ public class InventoryServlet extends HttpServlet {
     
     private void doProcess(HttpServletRequest request, HttpServletResponse response) {	
     	setVariables(request, response);
-    	//build search link
-    	buildSearchLink();
     	//process request
     	processRequest();
-    	
-    		/*switch(sort) { //sorting
-    			case LOWTOHIGH: //sort low to high
-    				if(dept != null) { //by dept
-    					if(!search.equals("Search")) { //search by
-    						inventory = iHandle.searchByDeptAndSort(dept, search, "price", false);
-    					}else { //no search
-    						inventory = iHandle.getByDeptSortBy(dept.toLowerCase(), "price", false);
-    					}			
-    				}else {  //by all items
-    					if(!search.equals("Search")){ //search by
-    						inventory = iHandle.searchAndSort(search, "price", false);
-    					}else { //no search
-    						inventory = iHandle.getAllSortBy("price", false);
-        					dept = "Inventory";
-    					}
-    				}
-    				break;
-    			case HIGHTOLOW: //sort high to low 
-    				if(dept != null) {  //by dept
-    					if(!search.equals("Search")){ //search by
-    						inventory = iHandle.searchByDeptAndSort(dept, search, "price", true);
-    					}else {//no search
-    						inventory = iHandle.getByDeptSortBy(dept.toLowerCase(), "price", true);
-    					}	
-    				}else {  //by all items
-    					if(!search.equals("Search")){ //search by
-    						inventory = iHandle.searchAndSort(search, "price", true);
-    					}else { //no search
-    						inventory = iHandle.getAllSortBy("price", true);
-        					dept = "Inventory";
-    					}
-    				}
-    				break;
-    			default: //no sorting
-    				if(dept != null) {  //by dept
-    					if(!search.equals("Search")) { //search by
-    						inventory = iHandle.searchByDept(dept, search);
-    					}else { //no search
-    						inventory = iHandle.getAll();
-        					dept = "Inventory";
-    					}
-    					inventory = iHandle.getByDept(dept.toLowerCase());
-    				}else {  //by all items
-    					if(!search.equals("Search")) {
-    						inventory = iHandle.search(search);
-    					}else { //no search
-    						inventory = iHandle.getAll();
-        					dept = "Inventory";
-    					}
-    				}
-    				break;
-    		} //end processing
-*/    		
+      	//build search link
+    	buildSearchLink();
     	try { //set attributes
     		if(sort.equals(LOWTOHIGH)) {
     			request.setAttribute("sortLow", "<mark>Price: Low to High</mark>");
@@ -147,6 +93,7 @@ public class InventoryServlet extends HttpServlet {
     	System.out.println("SEARCH: " + search + " "); 
     	sort = ((String)request.getParameter("sort") != null)  //determine sort parameters
     				? (String)request.getParameter("sort") : "";
+    	System.out.println(sort);
     }
        
     private void setConnector(HttpSession session) {
@@ -195,40 +142,32 @@ public class InventoryServlet extends HttpServlet {
     	boolean bool_sort = (sort.equals(HIGHTOLOW) || sort.equals(LOWTOHIGH));
     	boolean bool_dept = !dept.equalsIgnoreCase("Inventory");
     	boolean desc = sort.equals(HIGHTOLOW);
-    	System.out.println(bool_search);
-    	System.out.println(bool_sort);
-    	System.out.println(bool_dept);
+    	System.out.println("search:" + bool_search);
+    	System.out.println("sort:" + bool_sort);
+    	System.out.println("dept search:" + bool_dept);
     	System.out.println(search);
     	
-    	if(!bool_dept) { //Inventory Page
+    	if(!bool_dept && !bool_search) { //Inventory Page
     		if(!bool_sort) { //no sort on all inventory
-    			if(!bool_search) { //no search on non sorted inventory
-    				inventory = iHandle.getAll();
-    				System.out.println(inventory.toString());
-    			}else {  //search on non sorted inventory
-    				inventory = iHandle.search(search);
-    			}
+    			inventory = iHandle.getAll();
+    			System.out.println(inventory.toString());
     		} else { //sort on all inventory
-    			if(!bool_search) { //no search on sorted inventory
-    				inventory = iHandle.getAllSortBy("price", desc);
-    			}else {  //search on sorted inventory
-    				inventory = iHandle.searchAndSort(search, "price", desc);
-    			}
+    			inventory = iHandle.searchAndSort(search, "price", desc);
     		}
-    	}else { //Department page
+    	}else if(bool_dept && !bool_search){ //Department page
     		if(!bool_sort) { //no sort on department
-    			if(!bool_search) { //no search on non sorted department
-    				inventory = iHandle.getByDept(dept);
-    			}else {  //search on non sorted department
-    				inventory = iHandle.searchByDept(dept, search);
-    			}
+    			inventory = iHandle.getByDept(dept);
     		} else { //sort on department
-    			if(!bool_search) { //no search on sorted department
-    				inventory = iHandle.getByDeptSortBy(dept, "price", desc);
-    			}else {  //search on sorted department
-    				inventory = iHandle.searchByDeptAndSort(dept, search, "price", desc);
-    			}
+    			inventory = iHandle.getByDeptSortBy(dept, "price", desc);
     		}
+    	}else {
+    		if(!bool_sort) {
+    			inventory = iHandle.search(search);
+    		}else {
+    			inventory = iHandle.search(search);
+    			//inventory = iHandle.searchAndSort(search, "price", desc);
+    		}
+    		dept = "Search: " + search;
     	}
     }
 }
