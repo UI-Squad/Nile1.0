@@ -30,7 +30,13 @@ public class LoadTag extends SimpleTagSupport{
 		String signOn = "Sign In";
 		String signLink = "login.jsp";
 		String search = (String)getJspContext().getAttribute("search", PageContext.REQUEST_SCOPE);
-		if(search == null) search = "Search";
+		String value = "";
+		if(search == null) {
+			search = "";
+		}else {
+			value = "&value=" + search;
+		}
+		
 		String invLink = (dept.equals("Inventory")) ? 
 				"<a href=\"inventory\" class=\"active\">Inventory</a>" :
 				"<a href=\"inventory\">Inventory</a>";
@@ -43,14 +49,17 @@ public class LoadTag extends SimpleTagSupport{
 		String sortHigh = (String)getJspContext().getAttribute("sortHigh", PageContext.REQUEST_SCOPE);
 		if(sortHigh == null) sortHigh = "Price: High to Low";
 		String searchText = (String)getJspContext().getAttribute("searchText", PageContext.REQUEST_SCOPE);
-		System.out.println(search);
-		System.out.println(searchLink);
+		if(searchText == null) searchText = "Search";
+		String sort = (String)getJspContext().getAttribute("sort", PageContext.REQUEST_SCOPE);
+		if(sort == null) sort = "";
+		System.out.println("OnLoad search:" + search);
+		System.out.println("OnLoad searchLink:" + searchLink);
 		
 		
 		if(main.booleanValue() == false) {
 			if(!dept.equalsIgnoreCase("Inventory")){
-				sortOne = "inventory?sort=1&dept=" + dept; 
-				sortTwo = "inventory?sort=2&dept=" + dept; 
+				sortOne = "inventory?sort=1&dept=" + dept + value; 
+				sortTwo = "inventory?sort=2&dept=" + dept + value; 
 			}
 			items = new ItemListCast().convertList(getJspContext().getAttribute("inventory", PageContext.REQUEST_SCOPE)); 
 			if(items == null) items = new ArrayList<Item>();
@@ -69,6 +78,7 @@ public class LoadTag extends SimpleTagSupport{
 		try {
 			System.out.println("LOADING OBJECTS...");
 			//request scope
+			getJspContext().setAttribute("sort", sort, PageContext.REQUEST_SCOPE);
 			getJspContext().setAttribute("sortLow", sortLow, PageContext.REQUEST_SCOPE);
 			getJspContext().setAttribute("sortHigh", sortHigh, PageContext.REQUEST_SCOPE);
 			getJspContext().setAttribute("searchLink", PageContext.REQUEST_SCOPE);

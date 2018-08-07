@@ -78,7 +78,7 @@ public class CartTag extends SimpleTagSupport{
 		out.println("</span></td>");
 		out.println("</tr>");
 		out.println("<tr class=\"checkoutrow\">");
-		out.println("<td colspan=\"5\" class=\"checkout\"><a href=\"personalCusInfoPage.jsp\">");
+		out.println("<td colspan=\"5\" class=\"checkout\"><a href=\"placeorder.jsp\">");
 		out.println("<button id=\"submitbtn\">Checkout</button></a>");
 		out.println("</td>");
 		out.println("</tr>");

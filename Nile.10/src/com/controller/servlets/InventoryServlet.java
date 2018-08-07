@@ -67,6 +67,7 @@ public class InventoryServlet extends HttpServlet {
         	request.setAttribute("inventory", inventory);
          	request.setAttribute("search", search);
          	request.setAttribute("searchLink", searchLink);
+         	request.setAttribute("sort", sort);
          	request.getRequestDispatcher("inventory.jsp").forward(request, response);
     	}catch(Exception e) {
     		System.err.println(this.getClass().getName() + ":" + e.getMessage());
@@ -81,14 +82,17 @@ public class InventoryServlet extends HttpServlet {
       	iHandle = new InventoryHandler(connector); //create database handler
     	dept = (String)request.getParameter("dept"); //locate department for items lookup
     	if(dept == null) dept = "Inventory";
-    	searchText = (String)request.getParameter("value"); //determine search parameters
-    	if (searchText != null) {
-    		search = searchText;
-    	}
-    	else {
-    		search = "";
+    	search = (String)request.getParameter("value");
+    	if (search == null) search = (String)request.getAttribute("search");
+    	if (search == null) {
     		searchText = "Search";
+    		search = "";
+    	}else {
+    		searchText = search;
     	}
+    	
+    		
+    	
     	System.out.println("SEARCHTEXT: " + searchText + " "); 
     	System.out.println("SEARCH: " + search + " "); 
     	sort = ((String)request.getParameter("sort") != null)  //determine sort parameters
@@ -152,7 +156,7 @@ public class InventoryServlet extends HttpServlet {
     			inventory = iHandle.getAll();
     			System.out.println(inventory.toString());
     		} else { //sort on all inventory
-    			inventory = iHandle.searchAndSort(search, "price", desc);
+    			inventory = iHandle.getAllSortBy("price", desc);
     		}
     	}else if(bool_dept && !bool_search){ //Department page
     		if(!bool_sort) { //no sort on department
@@ -162,10 +166,11 @@ public class InventoryServlet extends HttpServlet {
     		}
     	}else {
     		if(!bool_sort) {
+    			System.out.println("SEARCHING FOR: " + search);
     			inventory = iHandle.search(search);
     		}else {
-    			inventory = iHandle.search(search);
-    			//inventory = iHandle.searchAndSort(search, "price", desc);
+    			inventory = iHandle.searchAndSort(search, "price", desc);
+    			System.out.println("SEARCHING FOR: " + search);
     		}
     		dept = "Search: " + search;
     	}
