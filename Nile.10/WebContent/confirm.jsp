@@ -1,17 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="application.model.Customer" 
-	import="com.controller.casts.CustomerCast"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix = "nt" uri = "WEB-INF/custom.tld"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<nt:Load main="false"/>
-
+<nt:Load main="false"/>	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Shopping Cart</title>
-<link rel="stylesheet" type="text/css" href="css/styles.css">
+<title>Nile Shopping Service: Order Confirmed</title>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style type="text/css">
@@ -24,31 +21,6 @@ body {
 	padding: 10px;
 	background: #f1f1f1;
 }
-
-/* cart table format */
-#cart {
-    /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; */
-    border-collapse: collapse;
-    width: 100%;
-}
-
-#cart td, #cart th {
-    border: 0px solid #ddd;
-    padding: 8px;
-}
-
-#cart tr:nth-child(even){background-color: #f2f2f2;}
-
-#cart tr:hover {background-color: #ddd;}
-
-#cart th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-}
-/* end cart table format
 
 /* Create three equal columns that floats next to each other */
 .column {
@@ -188,8 +160,8 @@ body {
 	padding: 20px;
 }
 
-/* Add a  effect for articles */
-. {
+/* Add a card effect for articles */
+.card {
 	background-color: white;
 	padding: 20px;
 	margin-top: 20px;
@@ -274,33 +246,8 @@ navigation links stack on top of each other instead of next to each other */
 	}
 </script>
 
-<!-- Scripts that validate the cart and give the cart page a waiting cursor  -->
-<script type="text/javascript">
-
-	function clearWait(){
-		document.body.style.cursor='wait;'
-		
-		window.onload=function(){document.body.style.cursor='default';}
-	}
-	
-	function validateCart() {
-		var table = document.getElementById('cart').getElementsByTagName('tr');
-		var tableRows = table.length;
-			if(tableRows < 5){
-				document.getElementById('submitbtn').style.visibility = 'hidden';
-			} else {
-				document.getElementById('submitbtn').style.visibility = 'visible';
-		}
-	}
-	
-	function startUp(){
-		clearWait();
-		validateCart();
-	}
-</script>
-
 </head>
-<body onload= "startUp()">
+<body>
 
 	<div class="header">
 		<img src="./Images/siteLogo.jpeg" style="height: 300px;" alt="">
@@ -308,20 +255,19 @@ navigation links stack on top of each other instead of next to each other */
 
 	<!-- Navigation bar on the top of the menu  -->
 	<div class="topnav">
-		<a href="Website.jsp">Home</a>
+		<a href="Website.html">Home</a>
 
-		<!-- Drop down sub menu for categories in navigation bar  -->
 		<!-- Drop down sub menu for categories in navigation bar  -->
 		<div class="dropdown">
 			<button class="dropbtn">
 				Categories <i class="fa fa-caret-down"></i>
 			</button>
 			<div class="dropdown-content">
-				<nt:Categories category = "Cart" />
+				<nt:Categories category = "${requestScope.dept}" />
 			</div>
 		</div>
 
-		<a href="user?page=cart" class = "active">Cart</a> <a href="inventory">Inventory</a>
+		<a href="user?page=cart">Cart</a> ${requestScope.invLink}
 		<a href="${sessionScope.signLink}" style="float: right">${sessionScope.signOn}</a>
 
 		<!-- Search Bar -->
@@ -336,15 +282,12 @@ navigation links stack on top of each other instead of next to each other */
 		</div>
 	</div>
 
-
-	<!-- Cart page below nav bar -->
-	<nt:Cart cart="${sessionScope.cart}"/>
-
-
-	<div class="footer">
+	<!-- cart page below nav bar -->
+	<nt:Order order="${requestScope.order}"/>
+	
+		<div class="footer">
 		<h2>
-			<a href="contactUs.jsp"><font color="000000">Contact
-					Us</font></a>
+			<a href="contactUs.jsp"><font color="000000">Contact Us</font></a>
 		</h2>
 	</div>
 </body>

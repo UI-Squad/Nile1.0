@@ -47,4 +47,14 @@
 		<rtexprvalue>true</rtexprvalue>
 	   </attribute>	
    </tag>
+   <tag>
+       <name>Order</name>
+        <tag-class>com.tags.OrderTag</tag-class>
+        <body-content>empty</body-content>
+          <attribute>
+		<name>order</name>
+		<required>true</required>
+		<rtexprvalue>true</rtexprvalue>
+	   </attribute>	
+   </tag>
 </taglib>

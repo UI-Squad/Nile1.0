@@ -137,6 +137,7 @@ public class CustomerHandler extends DataHandler<CustomerFetcher> {
 		fetcher.updateCustomerById(customerId, email, firstNm, middleNm, lastNm, address, phoneNum);
 	}
 	
+	
 	/**
 	 * Updates a customer row in the Customers table specified by the Customer's email
 	 * @param email
@@ -168,6 +169,11 @@ public class CustomerHandler extends DataHandler<CustomerFetcher> {
 		fetcher.updateCustomerByEmail(email, firstNm, middleNm, lastNm, address, phoneNum);
 	}
 	
+	public void updateCurrentCart(String customerId, String curCart) {
+		fetcher.updateCustomerCurrentCart(customerId, curCart);
+	}
+	
+
 	/**
 	 * Removes a customer row from the Customers table specified by customerId
 	 * @param customerId String literal specifying the ID of the customer

@@ -176,6 +176,14 @@ public class CustomerFetcher extends DataFetcher {
 		updateData();
 	}
 	
+	public void updateCustomerCurrentCart(String customerId, String curCart) {
+		clearMaps();
+		sql = "UPDATE Customers c SET c.curCart = ? WHERE c.customerId = ?";
+		stringMap.put(1, curCart);
+		stringMap.put(2, customerId);
+		updateData();
+	}
+	
 	/**
 	 * Updates a customer row in the Customers table specified by the Customer's email
 	 * @param email
