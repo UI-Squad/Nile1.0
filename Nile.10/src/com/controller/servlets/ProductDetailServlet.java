@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/productdetails")
 public class ProductDetailServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
+	private static final long serialVersionUID = -2499835352572887548L;
+
+	/**
      * @see HttpServlet#HttpServlet()
      */
     public ProductDetailServlet() {

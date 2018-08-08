@@ -18,7 +18,7 @@ import application.model.Item;
 
 @WebServlet("/inventory")
 public class InventoryServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -3845066719514538661L;
 	private static final String LOWTOHIGH = "1";
 	private static final String HIGHTOLOW = "2";
 	private HttpSession session;

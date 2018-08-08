@@ -21,8 +21,7 @@ import application.model.Order;
 
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {
-	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4761109274259559078L;
 	private Connector connector;
 	private Controller control;
 	private HttpSession session;

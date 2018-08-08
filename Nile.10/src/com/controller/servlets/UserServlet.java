@@ -25,7 +25,7 @@ import application.model.Item;
 
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -3936570295702336156L;
 	private HttpSession session;
 	private Connector connector;
 	private Customer user;

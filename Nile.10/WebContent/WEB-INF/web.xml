@@ -2,19 +2,41 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>Nile1.0</display-name>
 <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>Website.jsp</welcome-file>
  </welcome-file-list> 
-<!-- <servlet>
+
+<servlet>
 	<servlet-name>inventory</servlet-name>
 	<servlet-class>com.controller.servlets.InventoryServlet</servlet-class>
 </servlet>
+<servlet>
+	<servlet-name>order</servlet-name>
+	<servlet-class>com.controller.servlets.OrderServlet</servlet-class>
+</servlet>
+<servlet>
+	<servlet-name>productdetails</servlet-name>
+	<servlet-class>com.controller.servlets.ProductDetailServlet</servlet-class>
+</servlet>
+<servlet>
+	<servlet-name>user</servlet-name>
+	<servlet-class>com.controller.servlets.UserServlet</servlet-class>
+</servlet>
+<!--
 <servlet-mapping>
 	<servlet-name>inventory</servlet-name>
-	<url-pattern>/inventory</url-pattern>
-</servlet-mapping> -->
+	<url-pattern>/Nile1.0/*</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+	<servlet-name>order</servlet-name>
+	<url-pattern>/Nile1.0/*</url-pattern>
+</servlet-mapping>  
+<servlet-mapping>
+	<servlet-name>productdetails</servlet-name>
+	<url-pattern>/Nile1.0/*</url-pattern>
+</servlet-mapping> 
+<servlet-mapping>
+	<servlet-name>user</servlet-name>
+	<url-pattern>/Nile1.0/*</url-pattern>
+</servlet-mapping> 
+-->
 </web-app> 
